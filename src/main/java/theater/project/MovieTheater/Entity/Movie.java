@@ -1,11 +1,27 @@
 package theater.project.MovieTheater.Entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
 @Table(name="movies")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String title;
+
+    @JoinColumn(name = "seat_id")
+    @OneToMany
+    private List<Seat> availableSeats;
 }
