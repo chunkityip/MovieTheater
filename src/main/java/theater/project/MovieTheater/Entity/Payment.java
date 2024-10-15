@@ -25,6 +25,7 @@ public class Payment {
 
     /**
      * Maybe we should Join the Ticket table?
+     * JOINTABLE
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="ticket_id")
@@ -33,6 +34,7 @@ public class Payment {
 
     /**
      * Maybe we should Join the Concession table?
+     * JOINTABLE
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="concession_id")
@@ -41,6 +43,7 @@ public class Payment {
     /*
     payment history for user account for all prior tickets bought and future.
      */
+    // Once payment is complement , update to User
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;

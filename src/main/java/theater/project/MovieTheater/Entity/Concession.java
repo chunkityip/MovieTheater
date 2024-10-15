@@ -26,9 +26,4 @@ public class Concession {
     @Column(name="purchase_time")
     private LocalDateTime purchaseTime;
 
-    /** Should the Concession associated with
-     * User and Ticket if concessions can be purchased alongside tickets
-     * or independently?
-     */
-
 }

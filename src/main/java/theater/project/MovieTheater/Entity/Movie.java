@@ -25,14 +25,8 @@ public class Movie {
     @OneToMany
     private List<Seat> availableSeats;
 
-    /**
-     * Should the Movie associated with showings in a Theater ?
-     */
-
-    // Store image as Movie cover?
-    /*
     @Lob
     @Column(name = "cover_image")
-    private byte[] coverImage; // Store image as a binary array
-     */
+    private byte[] coverImage;
+
 }
