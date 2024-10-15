@@ -23,18 +23,25 @@ public class Payment {
     @Column(name="total_balance")
     private double totalBalance;
 
-    @OneToMany
+    /**
+     * Maybe we should Join the Ticket table?
+     */
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="ticket_id")
     private List<Ticket> tickets;
 
-    @OneToMany
+
+    /**
+     * Maybe we should Join the Concession table?
+     */
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="concession_id")
     private List<Concession> concessions;
 
     /*
     payment history for user account for all prior tickets bought and future.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 

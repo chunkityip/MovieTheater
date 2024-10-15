@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable=false)
@@ -30,8 +30,7 @@ public class User {
     @Column(name="user_role")
     private UserRole userRole;
 
-    @Column(name="payments")
-    @OneToMany
-    private List<Payment> payments;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Payment> userPayments;
 
 }

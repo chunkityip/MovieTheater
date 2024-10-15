@@ -22,7 +22,7 @@ public class Theater {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="movie_id")
     private List<Movie> movieList;
 
