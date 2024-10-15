@@ -24,4 +24,9 @@ public class Movie {
     @JoinColumn(name = "seat_id")
     @OneToMany
     private List<Seat> availableSeats;
+
+    @Lob
+    @Column(name = "cover_image")
+    private byte[] coverImage;
+
 }

@@ -25,4 +25,5 @@ public class Concession {
 
     @Column(name="purchase_time")
     private LocalDateTime purchaseTime;
+
 }
