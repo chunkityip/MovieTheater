@@ -20,13 +20,15 @@ public class Movie {
     private long id;
 
     private String title;
-
+    private String description;
     @JoinColumn(name = "seat_id")
     @OneToMany
-    private List<Seat> availableSeats;
+    private Seat[] availableSeats = new Seat[30];
 
     @Lob
     @Column(name = "cover_image")
     private byte[] coverImage;
+
+//    private String status;
 
 }

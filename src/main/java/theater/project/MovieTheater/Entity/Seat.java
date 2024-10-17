@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import theater.project.MovieTheater.Enum.Status;
 
 @Data
 @Entity
@@ -18,11 +19,9 @@ public class Seat {
     private long id;
 
     @Column(name="is_occupied")
-    private boolean isOccupied;
+    private Status isOccupied;
 
-    @Column(name="column_number")
-    private int columnNumber;
+    @Column(name="seat_number")
+    private String seatNumber;
 
-    @Column(name="row_number")
-    private int rowNumber;
 }
