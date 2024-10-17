@@ -20,7 +20,7 @@ public class Ticket {
     private long id;
 
     @JoinColumn(name="movie_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Movie movie;
 
     @Column(nullable = false)

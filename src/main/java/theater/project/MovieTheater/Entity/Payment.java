@@ -23,18 +23,34 @@ public class Payment {
     @Column(name="total_balance")
     private double totalBalance;
 
-    @OneToMany
-    @JoinColumn(name="ticket_id")
+    /**
+     * joinColumns: Assign the column of third table related to entity itself.
+     * inverseJoinColumns: Assign the column of third table related to associated entity.
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    //@JoinColumn(name="ticket_id")
+    @JoinTable(
+            name ="payment_tickets",
+            joinColumns = @JoinColumn(name = "payment_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id")
+    )
     private List<Ticket> tickets;
 
-    @OneToMany
-    @JoinColumn(name="concession_id")
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name ="payment_concessions",
+            joinColumns = @JoinColumn(name = "payment_id"),
+            inverseJoinColumns = @JoinColumn(name = "concession_id")
+    )
+    //@JoinColumn(name="concession_id")
     private List<Concession> concessions;
 
     /*
     payment history for user account for all prior tickets bought and future.
      */
-    @ManyToOne
+    // Once payment is complement , update to User
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 

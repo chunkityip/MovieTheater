@@ -1,0 +1,23 @@
+services:
+  postgres:
+    container_name: movie_theater
+    image: postgres
+    environment:
+      # Make sure in DBeaver Authentication username and password need to be match
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: movie
+    ports:
+      - "5432:5432"
+    networks:
+      - spring-demo
+    restart: unless-stopped
+
+networks:
+  spring-demo:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local
