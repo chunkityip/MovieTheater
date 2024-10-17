@@ -24,20 +24,26 @@ public class Payment {
     private double totalBalance;
 
     /**
-     * Maybe we should Join the Ticket table?
-     * JOINTABLE
+     * joinColumns: Assign the column of third table related to entity itself.
+     * inverseJoinColumns: Assign the column of third table related to associated entity.
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="ticket_id")
+    //@JoinColumn(name="ticket_id")
+    @JoinTable(
+            name ="payment_tickets",
+            joinColumns = @JoinColumn(name = "payment_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id")
+    )
     private List<Ticket> tickets;
 
 
-    /**
-     * Maybe we should Join the Concession table?
-     * JOINTABLE
-     */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="concession_id")
+    @JoinTable(
+            name ="payment_concessions",
+            joinColumns = @JoinColumn(name = "payment_id"),
+            inverseJoinColumns = @JoinColumn(name = "concession_id")
+    )
+    //@JoinColumn(name="concession_id")
     private List<Concession> concessions;
 
     /*
