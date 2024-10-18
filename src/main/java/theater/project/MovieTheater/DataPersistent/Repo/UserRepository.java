@@ -15,4 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> getUserByTicketId(@Param("ticketId") Long id);
 
     Optional<User> getUserById(Long id);
+
+    Optional<User> getUserByName(String name);
+
+    Long getUserId();
 }

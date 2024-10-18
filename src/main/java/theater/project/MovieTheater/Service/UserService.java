@@ -5,10 +5,10 @@ import theater.project.MovieTheater.API.DTO.User.CreateAdminRequestDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.User;
 import theater.project.MovieTheater.DataPersistent.Repo.UserRepository;
 
-@Service
+
 public interface UserService {
 
-    UserRepository registerUser(CreateAdminRequestDTO requestDTO);
+    CreateAdminRequestDTO registerUser(CreateAdminRequestDTO requestDTO);
     User loginUser(AmdinReponse amdinReponse);
 
 }
