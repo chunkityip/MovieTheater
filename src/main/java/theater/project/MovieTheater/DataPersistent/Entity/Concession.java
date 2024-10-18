@@ -1,4 +1,4 @@
-package theater.project.MovieTheater.Entity;
+package theater.project.MovieTheater.DataPersistent.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

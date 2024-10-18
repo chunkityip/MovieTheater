@@ -1,11 +1,10 @@
-package theater.project.MovieTheater.Entity;
+package theater.project.MovieTheater.DataPersistent.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import theater.project.MovieTheater.Enum.UserRole;
 
 import java.util.List;
 
@@ -27,8 +26,9 @@ public class User {
     @Column(nullable=true)
     private String email;
 
-    @Column(name="user_role")
-    private UserRole userRole;
+//    We may need to re-create db
+//    @Column(name="user_role")
+//    private UserRole userRole;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Payment> userPayments;

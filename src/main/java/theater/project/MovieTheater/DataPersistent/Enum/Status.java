@@ -1,4 +1,4 @@
-package theater.project.MovieTheater.Enum;
+package theater.project.MovieTheater.DataPersistent.Enum;
 
 public enum Status {
     /*

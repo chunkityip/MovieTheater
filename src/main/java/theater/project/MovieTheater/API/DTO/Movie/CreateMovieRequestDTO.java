@@ -1,4 +1,4 @@
-package theater.project.MovieTheater.DTO.Movie;
+package theater.project.MovieTheater.API.DTO.Movie;
 
 import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
