@@ -1,10 +1,10 @@
-package theater.project.MovieTheater.DTO.User;
+package theater.project.MovieTheater.API.DTO.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import theater.project.MovieTheater.Enum.UserRole;
+import theater.project.MovieTheater.DataPersistent.Enum.UserRole;
 
 @Data
 @Builder
