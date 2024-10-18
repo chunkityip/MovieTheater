@@ -27,8 +27,8 @@ public class User {
     @Column(nullable=true)
     private String email;
 
-    @Column(name="user_role")
-    private UserRole userRole;
+//    @Column(name="user_role")
+//    private UserRole userRole;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Payment> userPayments;
