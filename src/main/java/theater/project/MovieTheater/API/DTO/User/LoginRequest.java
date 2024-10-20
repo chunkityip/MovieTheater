@@ -7,5 +7,5 @@ import lombok.Data;
 public class LoginRequest {
 
     @NotBlank(message = "User name is required")
-    private String userName;
+    private String name;
 }
