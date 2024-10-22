@@ -11,19 +11,17 @@ import java.util.List;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
-    Seat getSeatById(Long id);
-    Seat getSeatBySeatNumber(String seatNumber);
-    List<Seat> getAllSeats();
+//    List<Seat> getAllSeats();
 
-//    @Query("SELECT s FROM Seat s WHERE s.id = :seatId")
-//    Seat getSeatById(@Param("seatId") Long id); // Corrected method signature
+    @Query("SELECT s FROM Seat s WHERE s.id = :seatId")
+    Seat getSeatById(@Param("seatId") Long id); // Corrected method signature
 
-//    // Assuming seatNumber is unique, else change the method name to indicate it returns a list
-//    @Query("SELECT s FROM Seat s WHERE s.seatNumber = :seatNumber")
-//    Seat getSeatBySeatNumber(@Param("seatNumber") String seatNumber);
+    // Assuming seatNumber is unique, else change the method name to indicate it returns a list
+    @Query("SELECT s FROM Seat s WHERE s.seatNumber = :seatNumber")
+    Seat getSeatBySeatNumber(@Param("seatNumber") String seatNumber);
 
-//    Available = 0 , Occupied = 1 ........
-//    @Query("SELECT s FROM Seat s WHERE s.isOccupied = 0 AND s.id IN :seatIds")
-//    List<Seat> getAvailableSeats(@Param("seatIds") List<Long> seatIds); // Changed method name for clarity
+    //Available = 0 , Occupied = 1 ........
+    //@Query("SELECT s FROM Seat s WHERE s.isOccupied = 0 AND s.id IN :seatIds")
+    //List<Seat> getAvailableSeats(@Param("seatIds") List<Long> seatIds); // Changed method name for clarity
 
 }
