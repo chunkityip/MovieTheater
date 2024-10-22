@@ -18,8 +18,8 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="is_occupied")
-    private Status isOccupied;
+    @Column(name="seat_status")
+    private Status seatStatus;
 
     @Column(name="seat_number")
     private String seatNumber;
