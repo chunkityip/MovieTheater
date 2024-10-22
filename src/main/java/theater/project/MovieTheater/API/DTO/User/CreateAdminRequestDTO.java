@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import theater.project.MovieTheater.DataPersistent.Enum.UserRole;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAdminRequestDTO {
+    private Long id; // This will be populated after the user is saved
     private String name;
-    private UserRole userRole = UserRole.ADMIN;
 }
 
