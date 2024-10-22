@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import theater.project.MovieTheater.API.DTO.User.CreateAdminRequestDTO;
 import theater.project.MovieTheater.API.DTO.User.LoginRequest;
 import theater.project.MovieTheater.DataPersistent.Entity.User;
+import theater.project.MovieTheater.DataPersistent.Repo.UserRepository;
 import theater.project.MovieTheater.Service.Impl.UserServiceImpl;
 import theater.project.MovieTheater.Service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -17,7 +20,7 @@ import theater.project.MovieTheater.Service.UserService;
 public class UserController {
 
     private final UserService userService;
-
+    private final UserRepository repo;
     @PostMapping("/register")
     public ResponseEntity<CreateAdminRequestDTO> registerUser(@RequestBody CreateAdminRequestDTO requestDTO) {
         CreateAdminRequestDTO registeredUser = userService.registerUser(requestDTO);
@@ -29,6 +32,11 @@ public class UserController {
         User loggedInUser = userService.loginUser(loginRequest);
         return ResponseEntity.ok(loggedInUser);
     }
+
+//    @GetMapping("/register")
+//    public List<User> registerUser() {
+//        return repo.findAll();
+//    }
 
 
 }
