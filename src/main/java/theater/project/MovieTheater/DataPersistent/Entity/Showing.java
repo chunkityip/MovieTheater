@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,14 +20,14 @@ public class Showing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "movie_id")
     @ManyToOne
     private Movie movie;
 
     private LocalDate showingDate;
     private LocalTime showingTime;
 
-    @JoinColumn(name = "id")
-    @OneToMany
-    private Seat[] listOfSeats = new Seat[30];
+//    @JoinColumn(name = "seat_id")
+    @ManyToMany
+    private List<Seat> seats;
 }

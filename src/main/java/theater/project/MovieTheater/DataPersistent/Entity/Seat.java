@@ -18,13 +18,13 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="seat_number")
+//    @Column(name="seat_number")
     private String seatNumber;
 
-    @Column(name="seat_status")
+//    @Column(name="seat_status")
     private Status seatStatus;
 
-    @JoinColumn(name="id")
+    @JoinColumn(name="showing_id")
     @ManyToOne
     private Showing showing;
 

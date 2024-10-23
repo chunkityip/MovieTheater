@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -232,7 +231,7 @@ public class ShowingServiceImpl implements ShowingService {
 
     @Override
     public boolean isShowingSoldOut(Long showingId) {
-        Seat[] listOfSeats = showingRepository.getReferenceById(showingId).getListOfSeats();
+        List<Seat> listOfSeats = showingRepository.getReferenceById(showingId).getSeats();
         List<Seat> listOfAvailableSeats = new ArrayList<>();
         for(Seat seat : listOfSeats){
             if(seat.getSeatStatus().equals(Status.AVAILABLE)){
