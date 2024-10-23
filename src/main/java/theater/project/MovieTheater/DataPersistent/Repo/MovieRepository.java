@@ -15,4 +15,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("SELECT m FROM Movie m JOIN Ticket t ON t.movie = m GROUP BY m ORDER BY COUNT(t) DESC")
     List<Movie> getTopSellingMovies();
 
+    Movie getReferenceByTitle(String movieName);
 }

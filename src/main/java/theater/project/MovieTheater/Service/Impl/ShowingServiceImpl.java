@@ -4,151 +4,255 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
+import theater.project.MovieTheater.DataPersistent.Enum.Status;
+import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
+import theater.project.MovieTheater.DataPersistent.Repo.SeatRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.ShowingRepository;
 import theater.project.MovieTheater.Service.ShowingService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ShowingServiceImpl implements ShowingService {
 
     private final ShowingRepository showingRepository;
+    private final MovieRepository movieRepository;
+    private final SeatRepository seatRepository;
 
     @Override
     public Showing getShowingById(Long showingId) {
-        return null;
+        return showingRepository.getShowingById(showingId);
     }
 
     @Override
     public List<Showing> getAllShowings() {
-        return List.of();
+        return showingRepository.findAll();
     }
 
     @Override
     public List<Showing> getShowingsByDate(LocalDate date) {
-        return List.of();
+        return showingRepository.getShowingsByShowingDate(date);
     }
 
     @Override
     public List<Showing> getShowingsByDateAndTime(LocalDate date, LocalTime time) {
-        return List.of();
+        List<Showing> listOfShowingsByDate = new ArrayList<>();
+        List<Showing> listOfShowingsByDateAndTime = new ArrayList<>();
+
+        listOfShowingsByDate.addAll(showingRepository.getShowingsByShowingDate(date));
+        for (Showing showing : listOfShowingsByDate){
+            if (showing.getShowingTime().equals(time)){
+                listOfShowingsByDateAndTime.add(showing);
+            }
+        }
+        return listOfShowingsByDateAndTime;
     }
 
     @Override
     public List<Showing> getShowingsByMovieId(Long movieId) {
-        return List.of();
+        return showingRepository.getShowingsByMovie(movieRepository.getReferenceById(movieId));
     }
 
     @Override
     public List<Showing> getShowingsByMovieAndDate(Long movieId, LocalDate date) {
-        return List.of();
+        List<Showing> showingsByMovieAndDate = new ArrayList<>();
+
+        List<Showing> showingsByMovie = showingRepository.getShowingsByMovie(movieRepository.getReferenceById(movieId));
+        for (Showing showing : showingsByMovie){
+            if(showing.getShowingDate().equals(date)){
+                showingsByMovieAndDate.add(showing);
+            }
+        }
+        return showingsByMovieAndDate;
+
     }
 
     @Override
     public List<Showing> getShowingsByMovieIdAndTime(Long movieId, LocalTime time) {
-        return List.of();
+        List<Showing> showingsByMovieAndTime = new ArrayList<>();
+
+        List<Showing> showingsByMovie = showingRepository.getShowingsByMovie(movieRepository.getReferenceById(movieId));
+        for (Showing showing : showingsByMovie){
+            if(showing.getShowingTime().equals(time)){
+                showingsByMovieAndTime.add(showing);
+            }
+        }
+        return showingsByMovieAndTime;
     }
 
     @Override
     public List<Showing> getShowingsByMovieWithDateAndTime(Long movieId, LocalDate date, LocalTime time) {
-        return List.of();
+        List<Showing> showingsByMovieWithDateAndTime = new ArrayList<>();
+
+        List<Showing> showingsByMovie = showingRepository.getShowingsByMovie(movieRepository.getReferenceById(movieId));
+        for (Showing showing : showingsByMovie){
+            if(showing.getShowingDate().equals(date) && showing.getShowingTime().equals(time)){
+                showingsByMovieWithDateAndTime.add(showing);
+            }
+        }
+        return showingsByMovieWithDateAndTime;
     }
 
     @Override
     public Showing addNewShowing(Showing showing) {
-        return null;
+        return showingRepository.save(showing);
     }
 
     @Override
-    public Showing updateShowing(Long showingId, Showing updatedShowing) {
-        return null;
-    }
-
-    @Override
-    public boolean deleteShowing(Long showingId) {
-        return false;
+    public void deleteShowing(Long showingId) {
+        showingRepository.deleteById(showingId);
     }
 
     @Override
     public List<Showing> addMultipleNewShowings(List<Showing> showings) {
-        return List.of();
+        return showingRepository.saveAll(showings);
     }
 
     @Override
-    public List<Showing> removeMultipleShowings(List<Showing> showings) {
-        return List.of();
+    public void removeMultipleShowings(List<Showing> showings) {
+        showingRepository.deleteAll(showings);
     }
 
     @Override
-    public boolean removeAllShowingsByMovieId(Long movieId) {
-        return false;
+    public void removeAllShowingsByMovieId(Long movieId) {
+        List<Showing> showingsByMovie = showingRepository.getShowingsByMovie(movieRepository.getReferenceById(movieId));
+        showingRepository.deleteAll(showingsByMovie);
     }
 
     @Override
-    public boolean removeAllShowingsByMovieName(String movieName) {
-        return false;
+    public void removeAllShowingsByMovieName(String movieName) {
+        List<Showing> showingsByMovie = showingRepository.getShowingsByMovie(movieRepository.getReferenceByTitle(movieName));
+        showingRepository.deleteAll(showingsByMovie);
     }
 
     @Override
-    public boolean removeAllShowingsByDate(LocalDate date) {
-        return false;
+    public void removeAllShowingsByDate(LocalDate date) {
+        List<Showing> showingsByDate = showingRepository.getShowingsByShowingDate(date);
+        showingRepository.deleteAll(showingsByDate);
     }
 
     @Override
     public boolean showingExistsByShowingId(Long showingId) {
-        return false;
+        return showingRepository.existsById(showingId);
     }
 
     @Override
     public boolean showingExistsByMovieId(Long movieId) {
-        return false;
+        List<Showing> listOfShowing = getShowingsByMovieId(movieId);
+        return !listOfShowing.isEmpty();
     }
 
     @Override
-    public boolean showingExistsByMovieName(Long movieName) {
-        return false;
+    public boolean showingExistsByMovieName(String movieName) {
+        List<Showing> showingsByMovie = showingRepository.getShowingsByMovie(movieRepository.getReferenceByTitle(movieName));
+        return !showingsByMovie.isEmpty();
     }
 
     @Override
     public int getNumOfAvailableSeats(Long showingId) {
-        return 0;
+        List<Seat> availableSeats = new ArrayList<>();
+        for (Seat seat : seatRepository.getSeatsByShowingId(showingId)){
+            if(seat.getSeatStatus().equals(Status.AVAILABLE)){
+                availableSeats.add(seat);
+            }
+        }
+        return availableSeats.size();
     }
 
     @Override
     public int getNumOfOccupiedSeats(Long showingId) {
-        return 0;
+        List<Seat> occupiedSeats = new ArrayList<>();
+        for (Seat seat : seatRepository.getSeatsByShowingId(showingId)){
+            if(seat.getSeatStatus().equals(Status.OCCUPIED)){
+                occupiedSeats.add(seat);
+            }
+        }
+        return occupiedSeats.size();
     }
 
     @Override
     public int getNumOfDisabledSeats(Long showingId) {
-        return 0;
+        List<Seat> disabledSeats = new ArrayList<>();
+        for (Seat seat : seatRepository.getSeatsByShowingId(showingId)){
+            if(seat.getSeatStatus().equals(Status.DISABLED)){
+                disabledSeats.add(seat);
+            }
+        }
+        return disabledSeats.size();
     }
 
     @Override
     public List<Seat> getAvailableSeatsForShowing(Long showingId) {
-        return List.of();
+        List<Seat> availableSeats = new ArrayList<>();
+        for (Seat seat : seatRepository.getSeatsByShowingId(showingId)){
+            if(seat.getSeatStatus().equals(Status.AVAILABLE)){
+                availableSeats.add(seat);
+            }
+        }
+        return availableSeats;
     }
 
     @Override
-    public List<Seat> getSelectedSeatsForShowing(Long showingId) {
-        return List.of();
+    public List<Seat> getDisabledSeatsForShowing(Long showingId) {
+        List<Seat> disabledSeats = new ArrayList<>();
+        for (Seat seat : seatRepository.getSeatsByShowingId(showingId)){
+            if(seat.getSeatStatus().equals(Status.DISABLED)){
+                disabledSeats.add(seat);
+            }
+        }
+        return disabledSeats;
     }
 
     @Override
     public List<Seat> getOccupiedSeatsForShowing(Long showingId) {
-        return List.of();
+        List<Seat> occupiedSeats = new ArrayList<>();
+        for (Seat seat : seatRepository.getSeatsByShowingId(showingId)){
+            if(seat.getSeatStatus().equals(Status.OCCUPIED)){
+                occupiedSeats.add(seat);
+            }
+        }
+        return occupiedSeats;
+    }
+
+    @Override
+    public List<Seat> getSelectedSeatsForShowing(Long showingId) {
+        List<Seat> selectedSeats = new ArrayList<>();
+        for (Seat seat : seatRepository.getSeatsByShowingId(showingId)){
+            if(seat.getSeatStatus().equals(Status.SELECTED)){
+                selectedSeats.add(seat);
+            }
+        }
+        return selectedSeats;
     }
 
     @Override
     public boolean isShowingSoldOut(Long showingId) {
-        return false;
+        Seat[] listOfSeats = showingRepository.getReferenceById(showingId).getListOfSeats();
+        List<Seat> listOfAvailableSeats = new ArrayList<>();
+        for(Seat seat : listOfSeats){
+            if(seat.getSeatStatus().equals(Status.AVAILABLE)){
+                listOfAvailableSeats.add(seat);
+            }
+        }
+        return listOfAvailableSeats.isEmpty();
     }
 
     @Override
-    public boolean hasShowingCompleted(Long showingId) {
-        return false;
+    public boolean isShowingCompleted(Long showingId) {
+        Showing showing = showingRepository.getReferenceById(showingId);
+        if(showing.getShowingDate().equals(LocalDate.now()) || showing.getShowingDate().isAfter(LocalDate.now())){
+            if(showing.getShowingTime().isAfter(LocalTime.now())){
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 }

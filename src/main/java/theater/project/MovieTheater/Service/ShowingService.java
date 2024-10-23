@@ -24,29 +24,29 @@ public interface ShowingService {
 
     // ADMIN
     Showing addNewShowing(Showing showing);
-    Showing updateShowing(Long showingId, Showing updatedShowing);
-    boolean deleteShowing(Long showingId);
+    void deleteShowing(Long showingId);
 
     List<Showing> addMultipleNewShowings(List<Showing> showings);
-    List<Showing> removeMultipleShowings(List<Showing> showings);
+    void removeMultipleShowings(List<Showing> showings);
 
-    boolean removeAllShowingsByMovieId(Long movieId);
-    boolean removeAllShowingsByMovieName(String movieName);
-    boolean removeAllShowingsByDate(LocalDate date);
+    void removeAllShowingsByMovieId(Long movieId);
+    void removeAllShowingsByMovieName(String movieName);
+    void removeAllShowingsByDate(LocalDate date);
 
     boolean showingExistsByShowingId(Long showingId);
     boolean showingExistsByMovieId(Long movieId);
-    boolean showingExistsByMovieName(Long movieName);
+    boolean showingExistsByMovieName(String movieName);
 
     int getNumOfAvailableSeats(Long showingId);
     int getNumOfOccupiedSeats(Long showingId);
     int getNumOfDisabledSeats(Long showingId);
 
     List<Seat> getAvailableSeatsForShowing(Long showingId);
-    List<Seat> getSelectedSeatsForShowing(Long showingId);
+    List<Seat> getDisabledSeatsForShowing(Long showingId);
     List<Seat> getOccupiedSeatsForShowing(Long showingId);
+    List<Seat> getSelectedSeatsForShowing(Long showingId);
 
     boolean isShowingSoldOut(Long showingId);
-    boolean hasShowingCompleted(Long showingId);
+    boolean isShowingCompleted(Long showingId);
 
 }
