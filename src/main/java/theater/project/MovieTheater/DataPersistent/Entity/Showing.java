@@ -5,27 +5,28 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import theater.project.MovieTheater.DataPersistent.Enum.Status;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Entity
-@Table(name="seats")
+@Table(name="showings")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Seat {
+public class Showing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="seat_number")
-    private String seatNumber;
-
-    @Column(name="seat_status")
-    private Status seatStatus;
-
-    @JoinColumn(name="id")
+    @JoinColumn(name = "id")
     @ManyToOne
-    private Showing showing;
+    private Movie movie;
 
+    private LocalDate showingDate;
+    private LocalTime showingTime;
+
+    @JoinColumn(name = "id")
+    @OneToMany
+    private Seat[] listOfSeats = new Seat[30];
 }

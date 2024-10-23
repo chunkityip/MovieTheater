@@ -1,19 +1,20 @@
 package theater.project.MovieTheater.Service.Impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Enum.Status;
 import theater.project.MovieTheater.DataPersistent.Repo.SeatRepository;
 import theater.project.MovieTheater.Service.SeatService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SeatServiceImpl implements SeatService {
 
-    @Autowired
-    private SeatRepository seatRepository;
+    private final SeatRepository seatRepository;
 
 
     @Override
@@ -27,82 +28,91 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public List<Seat> getAllSeatsByMovieId(Long movieId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Seat> getAvailableSeatsByMovieId(Long movieId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Seat> getOccupiedSeatsByMovieId(Long movieId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Seat> getDisabledSeatsByMovieId(Long movieId) {
-        return List.of();
-    }
-
-    @Override
-    public Status getSeatStatus(Long seatId) {
-        return null;
+    public Status getSeatStatusBySeatId(Long seatId) {
+        return seatRepository.getSeatById(seatId).getSeatStatus();
     }
 
     @Override
     public boolean isAvailable(Long seatId) {
-        return false;
+        return seatRepository.getSeatById(seatId).getSeatStatus()==Status.AVAILABLE;
     }
 
     @Override
     public boolean isOccupied(Long seatId) {
-        return false;
+        return seatRepository.getSeatById(seatId).getSeatStatus()==Status.OCCUPIED;
     }
 
     @Override
     public boolean isSelected(Long seatId) {
-        return false;
+        return seatRepository.getSeatById(seatId).getSeatStatus()==Status.SELECTED;
+    }
+
+    @Override
+    public boolean isDisabled(Long seatId) {
+        return seatRepository.getSeatById(seatId).getSeatStatus()==Status.DISABLED;
     }
 
     @Override
     public void occupySeat(Long seatId) {
-
+        seatRepository.getSeatById(seatId).setSeatStatus(Status.OCCUPIED);
     }
 
     @Override
     public void selectSeat(Long seatId) {
-
+        seatRepository.getSeatById(seatId).setSeatStatus(Status.SELECTED);
     }
 
     @Override
     public void unselectSeat(Long seatId) {
-
+        seatRepository.getSeatById(seatId).setSeatStatus(Status.AVAILABLE);
     }
 
     @Override
     public void disableSeat(Long seatId) {
-
+        seatRepository.getSeatById(seatId).setSeatStatus(Status.DISABLED);
     }
 
     @Override
-    public void occupySeatsInBulk(List<Long> seatIds) {
-
+    public List<String> occupySeatsInBulkBySeatIds(List<Long> seatIds) {
+        List<String> occupiedSeatNumbers = new ArrayList<>();
+        for (Long seatId : seatIds){
+            Seat seat = seatRepository.getSeatById(seatId);
+            seat.setSeatStatus(Status.OCCUPIED);
+            occupiedSeatNumbers.add(seat.getSeatNumber());
+        }
+        return occupiedSeatNumbers;
     }
 
     @Override
-    public void selectSeatsInBulk(List<Long> seatIds) {
-
+    public List<String> selectSeatsInBulkBySeatIds(List<Long> seatIds) {
+        List<String> selectedSeatNumbers = new ArrayList<>();
+        for (Long seatId : seatIds){
+            Seat seat = seatRepository.getSeatById(seatId);
+            seat.setSeatStatus(Status.SELECTED);
+            selectedSeatNumbers.add(seat.getSeatNumber());
+        }
+        return selectedSeatNumbers;
     }
 
     @Override
-    public void unselectSeatsInBulk(List<Long> seatIds) {
-
+    public List<String> unselectSeatsInBulkBySeatIds(List<Long> seatIds) {
+        List<String> unselectedSeatNumbers = new ArrayList<>();
+        for (Long seatId : seatIds){
+            Seat seat = seatRepository.getSeatById(seatId);
+            seat.setSeatStatus(Status.AVAILABLE);
+            unselectedSeatNumbers.add(seat.getSeatNumber());
+        }
+        return unselectedSeatNumbers;
     }
 
     @Override
-    public void disableSeatsInBulk(List<Long> seatIds) {
-
+    public List<String> disableSeatsInBulkBySeatIds(List<Long> seatIds) {
+        List<String> disabledSeatNumbers = new ArrayList<>();
+        for (Long seatId : seatIds){
+            Seat seat = seatRepository.getSeatById(seatId);
+            seat.setSeatStatus(Status.DISABLED);
+            disabledSeatNumbers.add(seat.getSeatNumber());
+        }
+        return disabledSeatNumbers;
     }
 }

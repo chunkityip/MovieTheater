@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
-//    List<Seat> getAllSeats();
+    List<Seat> getSeatsByShowingId(Long showingId);
 
     @Query("SELECT s FROM Seat s WHERE s.id = :seatId")
     Seat getSeatById(@Param("seatId") Long id); // Corrected method signature
