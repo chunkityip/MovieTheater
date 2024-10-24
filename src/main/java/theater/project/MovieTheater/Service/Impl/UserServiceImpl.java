@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private final PaymentRepository paymentRepository; // Make sure to create this repository
     private final SeatRepository seatRepository; // Make sure to create this repository
     private final TicketRepository ticketRepository; // Make sure to create this repository
-    private final TheaterRepository theaterRepository; // Make sure to create this repository
 
     @Override
     public CreateAdminRequestDTO registerUser(CreateAdminRequestDTO requestDTO) {
@@ -80,7 +79,6 @@ public class UserServiceImpl implements UserService {
 //        List<Payment> payments = paymentRepository.findAll();
 //        List<Seat> seats = seatRepository.findAll();
 //        List<Ticket> tickets = ticketRepository.findAll();
-//        List<Theater> theaters = theaterRepository.findAll();
 //
 //        // Build and return the AdminProfileDTO
 //        return AdminProfileDTO.builder()
@@ -94,7 +92,6 @@ public class UserServiceImpl implements UserService {
 //                .payments(payments)
 //                .seats(seats)
 //                .tickets(tickets)
-//                .theaters(theaters)
 //                .build();
 //    }
 }

@@ -19,5 +19,4 @@ public class AdminProfileDTO {
     private List<Payment> payments;
     private List<Seat> seats;
     private List<Ticket> tickets;
-    private List<Theater> theaters;
 }
