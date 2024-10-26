@@ -7,18 +7,18 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name="movies")
+@Table(name = "movies")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String title;
     private String description;
+
     @JoinColumn(name = "seat_id")
     @OneToMany
     private Seat[] availableSeats = new Seat[30];
@@ -27,6 +27,6 @@ public class Movie {
     @Column(name = "cover_image")
     private byte[] coverImage;
 
-//    private String status;
-
+    @Transient
+    private String coverImageBase64;
 }

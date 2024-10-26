@@ -11,5 +11,6 @@ public interface UserService {
 
     CreateAdminRequestDTO registerUser(CreateAdminRequestDTO requestDTO);
     User loginUser(LoginRequest loginRequest);
+    User getUserById(Long id);
 
 }

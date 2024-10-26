@@ -30,5 +30,9 @@ public class UserController {
         return ResponseEntity.ok(loggedInUser);
     }
 
-
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<User> getUserProfile(@PathVariable Long id) {
+        User user = userService.getUserById(id);  // You'll need to implement this in UserService
+        return ResponseEntity.ok(user);
+    }
 }

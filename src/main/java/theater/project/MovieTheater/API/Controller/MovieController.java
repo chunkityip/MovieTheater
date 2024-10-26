@@ -1,0 +1,29 @@
+package theater.project.MovieTheater.API.Controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import theater.project.MovieTheater.API.DTO.Movie.CreateMovieRequestDTO;
+import theater.project.MovieTheater.Service.MovieService;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/movie")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
+public class MovieController {
+    private final MovieService movieService;
+
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CreateMovieRequestDTO> createMovie(
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("coverImage") MultipartFile coverImage) throws IOException {
+        CreateMovieRequestDTO createdMovie = movieService.createMovie(title, description, coverImage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
+    }
+}
