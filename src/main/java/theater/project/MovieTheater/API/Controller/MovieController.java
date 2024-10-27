@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import theater.project.MovieTheater.API.DTO.Movie.CreateMovieRequestDTO;
+import theater.project.MovieTheater.API.DTO.Movie.ShowMovieResponseDTO;
+import theater.project.MovieTheater.Exception.MovieNotFoundException;
 import theater.project.MovieTheater.Service.MovieService;
 
 import java.io.IOException;
@@ -25,5 +27,15 @@ public class MovieController {
             @RequestParam("coverImage") MultipartFile coverImage) throws IOException {
         CreateMovieRequestDTO createdMovie = movieService.createMovie(title, description, coverImage);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ShowMovieResponseDTO> getMovieById(@PathVariable Long id) {
+        try {
+            ShowMovieResponseDTO movie = movieService.getMovieById(id);
+            return ResponseEntity.ok(movie);
+        } catch (MovieNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
