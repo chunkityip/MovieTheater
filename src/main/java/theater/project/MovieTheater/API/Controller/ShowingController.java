@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import theater.project.MovieTheater.API.DTO.Seat.SeatSelectionRequestDTO;
 import theater.project.MovieTheater.API.DTO.Seat.SeatSelectionResponseDTO;
+import theater.project.MovieTheater.API.DTO.Showing.AddShowingDTO;
 import theater.project.MovieTheater.API.DTO.Showing.AllSeatStatusResponseDTO;
 import theater.project.MovieTheater.API.DTO.Showing.ShowingSelectionResponseDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
+import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
 import theater.project.MovieTheater.Service.SeatService;
 import theater.project.MovieTheater.Service.ShowingService;
 
@@ -24,6 +26,24 @@ public class ShowingController {
 
     private final ShowingService showingService;
     private final SeatService seatService;
+    private final MovieRepository movieRepository;
+
+    @PostMapping("/add_new")
+    public AddShowingDTO addNewShowing(@RequestBody AddShowingDTO requestDTO){
+        Showing showingToAdd = Showing.builder()
+                .movie(movieRepository.getReferenceById(requestDTO.getMovieId()))
+                .showingDate(requestDTO.getDate())
+                .showingTime(requestDTO.getTime())
+                .seats(requestDTO.getSeats())
+                .build();
+        Showing addedShowing = showingService.addNewShowing(showingToAdd);
+        return AddShowingDTO.builder()
+                .movieId(addedShowing.getMovie().getId())
+                .date(addedShowing.getShowingDate())
+                .time(addedShowing.getShowingTime())
+                .seats(addedShowing.getSeats())
+                .build();
+    }
 
     @GetMapping
     public List<LocalDate> getShowingDatesByMovieId(@PathVariable Long movieId){
