@@ -2,6 +2,8 @@ package theater.project.MovieTheater.Service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import theater.project.MovieTheater.API.DTO.Showing.AllSeatStatusResponseDTO;
+import theater.project.MovieTheater.API.DTO.Showing.ShowingSelectionResponseDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
 import theater.project.MovieTheater.DataPersistent.Enum.Status;
@@ -85,16 +87,17 @@ public class ShowingServiceImpl implements ShowingService {
     }
 
     @Override
-    public List<Showing> getShowingsByMovieWithDateAndTime(Long movieId, LocalDate date, LocalTime time) {
-        List<Showing> showingsByMovieWithDateAndTime = new ArrayList<>();
+    public ShowingSelectionResponseDTO getShowingByMovieWithDateAndTime(Long movieId, LocalDate date, LocalTime time) {
+        Showing targetShowing = null;
 
         List<Showing> showingsByMovie = showingRepository.getShowingsByMovie(movieRepository.getReferenceById(movieId));
         for (Showing showing : showingsByMovie){
-            if(showing.getShowingDate().equals(date) && showing.getShowingTime().equals(time)){
-                showingsByMovieWithDateAndTime.add(showing);
+            if(showing.getShowingDate().isEqual(date) && showing.getShowingTime().equals(time)){
+                targetShowing = showing;
             }
         }
-        return showingsByMovieWithDateAndTime;
+        return new ShowingSelectionResponseDTO(targetShowing.getMovie().getId(), targetShowing.getShowingDate(), targetShowing.getShowingTime(), targetShowing.getId());
+
     }
 
     @Override
@@ -183,6 +186,12 @@ public class ShowingServiceImpl implements ShowingService {
             }
         }
         return disabledSeats.size();
+    }
+
+    @Override
+    public AllSeatStatusResponseDTO getAllSeatsForShowing(Long showingId) {
+        List<Seat> allSeats = seatRepository.getSeatsByShowingId(showingId);
+        return new AllSeatStatusResponseDTO(allSeats);
     }
 
     @Override

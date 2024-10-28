@@ -1,6 +1,8 @@
 package theater.project.MovieTheater.Service;
 
 import org.springframework.stereotype.Service;
+import theater.project.MovieTheater.API.DTO.Showing.AllSeatStatusResponseDTO;
+import theater.project.MovieTheater.API.DTO.Showing.ShowingSelectionResponseDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
 
@@ -19,7 +21,7 @@ public interface ShowingService {
     List<Showing> getShowingsByMovieId(Long movieId);
     List<Showing> getShowingsByMovieAndDate(Long movieId, LocalDate date);
     List<Showing> getShowingsByMovieIdAndTime(Long movieId, LocalTime time);
-    List<Showing> getShowingsByMovieWithDateAndTime(Long movieId, LocalDate date, LocalTime time);
+    ShowingSelectionResponseDTO getShowingByMovieWithDateAndTime(Long movieId, LocalDate date, LocalTime time);
 
 
     // ADMIN
@@ -41,6 +43,7 @@ public interface ShowingService {
     int getNumOfOccupiedSeats(Long showingId);
     int getNumOfDisabledSeats(Long showingId);
 
+    AllSeatStatusResponseDTO getAllSeatsForShowing(Long showingId);
     List<Seat> getAvailableSeatsForShowing(Long showingId);
     List<Seat> getDisabledSeatsForShowing(Long showingId);
     List<Seat> getOccupiedSeatsForShowing(Long showingId);
