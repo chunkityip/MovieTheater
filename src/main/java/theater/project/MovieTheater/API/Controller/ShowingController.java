@@ -1,7 +1,76 @@
 package theater.project.MovieTheater.API.Controller;
 
-import org.springframework.stereotype.Controller;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import theater.project.MovieTheater.API.DTO.Seat.SeatSelectionRequestDTO;
+import theater.project.MovieTheater.API.DTO.Seat.SeatSelectionResponseDTO;
+import theater.project.MovieTheater.API.DTO.Showing.AllSeatStatusResponseDTO;
+import theater.project.MovieTheater.API.DTO.Showing.ShowingSelectionResponseDTO;
+import theater.project.MovieTheater.DataPersistent.Entity.Seat;
+import theater.project.MovieTheater.DataPersistent.Entity.Showing;
+import theater.project.MovieTheater.Service.SeatService;
+import theater.project.MovieTheater.Service.ShowingService;
 
-@Controller
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/movie/{movie_id}/showings")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class ShowingController {
+
+    private final ShowingService showingService;
+    private final SeatService seatService;
+
+    @GetMapping
+    public List<LocalDate> getShowingDatesByMovieId(@PathVariable Long movieId){
+        List<Showing> showingsByMovieId = showingService.getShowingsByMovieId(movieId);
+        List<LocalDate> datesToShowByMovie = new ArrayList<>();
+        for (Showing showing : showingsByMovieId){
+            if (showing.getShowingDate().isEqual(LocalDate.now()) || showing.getShowingDate().isAfter(LocalDate.now())){
+                datesToShowByMovie.add(showing.getShowingDate());
+            }
+        }
+        return datesToShowByMovie;
+    }
+
+    @GetMapping("/{showing_date}")
+    public List<LocalTime> getShowingTimesByMovieIdAndDate(@PathVariable Long movieId, @PathVariable LocalDate showingDate){
+        List<Showing> showingsByMovieIdAndDate = showingService.getShowingsByMovieAndDate(movieId, showingDate);
+        List<LocalTime> timesToShowByMovieAndDate = new ArrayList<>();
+        for (Showing showing : showingsByMovieIdAndDate){
+            if (showing.getShowingTime().isAfter(LocalTime.now())){
+                timesToShowByMovieAndDate.add(showing.getShowingTime());
+            }
+        }
+        return timesToShowByMovieAndDate;
+    }
+
+    @PostMapping("/{showing_date}/{showing_time}")
+    public Long getShowingIdByMovieWithDateAndTime(@PathVariable Long movieId, @PathVariable LocalDate date, @PathVariable LocalTime time){
+
+        ShowingSelectionResponseDTO responseDTO = showingService.getShowingByMovieWithDateAndTime(movieId, date, time);
+        return responseDTO.getShowingId();
+    }
+
+    @GetMapping("/{showing_id}/allSeats")
+    public AllSeatStatusResponseDTO getAllSeatStatus(@PathVariable Long showingId){
+        return showingService.getAllSeatsForShowing(showingId);
+    }
+
+    @PostMapping("/{showing_id}/allSeats")
+    public SeatSelectionResponseDTO seatSelection(@RequestBody SeatSelectionRequestDTO requestDTO){
+        List<Seat> listOfSelectedSeats = requestDTO.getSelectedSeat();
+        List<Long> listOfSelectedSeatIds = new ArrayList<>();
+        for(Seat seat : listOfSelectedSeats){
+            seatService.selectSeat(seat.getId());
+            listOfSelectedSeatIds.add(seat.getId());
+        }
+        return new SeatSelectionResponseDTO(listOfSelectedSeatIds);
+    }
+
+
 }

@@ -1,18 +1,15 @@
 package theater.project.MovieTheater.API.DTO.Showing;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShowingSelectionResponseDTO {
-    private Long movieId;
-    private LocalDate date;
-    private LocalTime time;
+public class AllSeatStatusRequestDTO {
     private Long showingId;
 }
+

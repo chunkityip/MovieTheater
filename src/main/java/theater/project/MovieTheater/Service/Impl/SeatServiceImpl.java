@@ -77,8 +77,10 @@ public class SeatServiceImpl implements SeatService {
         List<String> occupiedSeatNumbers = new ArrayList<>();
         for (Long seatId : seatIds){
             Seat seat = seatRepository.getSeatById(seatId);
-            seat.setSeatStatus(Status.OCCUPIED);
-            occupiedSeatNumbers.add(seat.getSeatNumber());
+            if(seat.getSeatStatus().equals(Status.SELECTED)) {
+                seat.setSeatStatus(Status.OCCUPIED);
+                occupiedSeatNumbers.add(seat.getSeatNumber());
+            }
         }
         return occupiedSeatNumbers;
     }
@@ -88,8 +90,10 @@ public class SeatServiceImpl implements SeatService {
         List<String> selectedSeatNumbers = new ArrayList<>();
         for (Long seatId : seatIds){
             Seat seat = seatRepository.getSeatById(seatId);
-            seat.setSeatStatus(Status.SELECTED);
-            selectedSeatNumbers.add(seat.getSeatNumber());
+            if(seat.getSeatStatus().equals(Status.AVAILABLE)) {
+                seat.setSeatStatus(Status.SELECTED);
+                selectedSeatNumbers.add(seat.getSeatNumber());
+            }
         }
         return selectedSeatNumbers;
     }
@@ -99,8 +103,10 @@ public class SeatServiceImpl implements SeatService {
         List<String> unselectedSeatNumbers = new ArrayList<>();
         for (Long seatId : seatIds){
             Seat seat = seatRepository.getSeatById(seatId);
-            seat.setSeatStatus(Status.AVAILABLE);
-            unselectedSeatNumbers.add(seat.getSeatNumber());
+            if(seat.getSeatStatus().equals(Status.SELECTED)) {
+                seat.setSeatStatus(Status.AVAILABLE);
+                unselectedSeatNumbers.add(seat.getSeatNumber());
+            }
         }
         return unselectedSeatNumbers;
     }
@@ -110,8 +116,10 @@ public class SeatServiceImpl implements SeatService {
         List<String> disabledSeatNumbers = new ArrayList<>();
         for (Long seatId : seatIds){
             Seat seat = seatRepository.getSeatById(seatId);
-            seat.setSeatStatus(Status.DISABLED);
-            disabledSeatNumbers.add(seat.getSeatNumber());
+            if(seat.getSeatStatus().equals(Status.AVAILABLE)) {
+                seat.setSeatStatus(Status.DISABLED);
+                disabledSeatNumbers.add(seat.getSeatNumber());
+            }
         }
         return disabledSeatNumbers;
     }
