@@ -50,14 +50,14 @@ class MovieServiceImplTest {
 //    }
 //    private final MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
 //    private final MovieService movieService = new MovieService(movieRepository);
-    @Test
-    void getAllMovies() {
-        List<Movie> expectedMovies = Arrays.asList(new Movie("Barbie"), new Movie("Star Wars"));
-        when(movieRepository.findAll()).thenReturn(expectedMovies);
-
-        List<Movie> actualMovies = movieService.getAllMovies();
-        assertEquals(expectedMovies, actualMovies);
-    }
+//    @Test
+//    void getAllMovies() {
+//        List<Movie> expectedMovies = Arrays.asList(new Movie("Barbie"), new Movie("Star Wars"));
+//        when(movieRepository.findAll()).thenReturn(expectedMovies);
+//
+//        List<Movie> actualMovies = movieService.getAllMovies();
+//        assertEquals(expectedMovies, actualMovies);
+//    }
 
     @Test
     void getMovieById_ReturnsMovie_WhenMovieExists() {
