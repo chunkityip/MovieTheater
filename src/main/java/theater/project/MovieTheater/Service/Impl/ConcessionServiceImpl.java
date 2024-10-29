@@ -20,19 +20,24 @@ public class ConcessionServiceImpl implements ConcessionService {
 
     @Override
     public Concession addConcession(CreateConcessionRequestDTO concession) {
-        return null;
+        double newConcessionPrice = concession.getPrice();
+        String newConcessionName = concession.getItemName();
+        return concessionRepository.save(Concession.builder()
+                .itemName(newConcessionName)
+                .price(newConcessionPrice)
+                .build());
     }
 
-    @Override
-    public Concession updateConcession(UpdateConcessionRequestDTO requestDTO) {
-        Optional<Concession> existingConcession = concessionRepository.findById(requestDTO.getId());
-        if (existingConcession.isPresent()) {
-            Concession concession = existingConcession.get();
-            concession.setPrice(requestDTO.getPrice());
-            return concessionRepository.save(concession);
-        } else {
-            throw new ConcessionNotFoundException("Concession not found");    }
-    }
+//    @Override
+//    public Concession updateConcession(UpdateConcessionRequestDTO requestDTO) {
+//        Optional<Concession> existingConcession = concessionRepository.findById(requestDTO.getId());
+//        if (existingConcession.isPresent()) {
+//            Concession concession = existingConcession.get();
+//            concession.setPrice(requestDTO.getPrice());
+//            return concessionRepository.save(concession);
+//        } else {
+//            throw new ConcessionNotFoundException("Concession not found");    }
+//    }
 
     @Override
     public List<Concession> getAllConcessions() {
@@ -41,22 +46,22 @@ public class ConcessionServiceImpl implements ConcessionService {
 
     @Override
     public List<Concession> getConcessionsByName(String name) {
-        List<Concession> listofConcessions = new ArrayList<>();
+        List<Concession> listOfConcessions = new ArrayList<>();
         for (Concession concession : concessionRepository.findAll()) {
             if (concession.getItemName().equals(name))
-                listofConcessions.add(concession);
+                listOfConcessions.add(concession);
         }
-        return listofConcessions;
+        return listOfConcessions;
     }
 
-    @Override
-    public void deleteConcession(Long concessionId) {
-        Optional<Concession> existingConcession = concessionRepository.findById(concessionId);
-        if (existingConcession.isPresent()) {            // If it exists, delete it
-           concessionRepository.delete(existingConcession.get());
-        } else {            // Throw custom exception if concession is not found
-             throw new ConcessionNotFoundException("Concession with ID " + concessionId + " not found.");
-        }
-    }
+//    @Override
+//    public void deleteConcession(Long concessionId) {
+//        Optional<Concession> existingConcession = concessionRepository.findById(concessionId);
+//        if (existingConcession.isPresent()) {            // If it exists, delete it
+//           concessionRepository.delete(existingConcession.get());
+//        } else {            // Throw custom exception if concession is not found
+//             throw new ConcessionNotFoundException("Concession with ID " + concessionId + " not found.");
+//        }
+//    }
 }
 

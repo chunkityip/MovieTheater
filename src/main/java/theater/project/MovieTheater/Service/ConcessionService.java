@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public interface ConcessionService {
     Concession addConcession(CreateConcessionRequestDTO concession);
-    Concession updateConcession(UpdateConcessionRequestDTO concession);
-    void deleteConcession(Long concession);
+//    Concession updateConcession(UpdateConcessionRequestDTO concession);
+//    void deleteConcession(Long concession);
     List<Concession> getAllConcessions();    //Different size of the same concession "Large, small popcorn"
     List<Concession> getConcessionsByName(String name);
 }
