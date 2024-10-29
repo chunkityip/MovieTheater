@@ -23,9 +23,8 @@ public class Movie {
     @OneToMany
     private Seat[] availableSeats = new Seat[30];
 
-    @Lob
     @Column(name = "cover_image")
-    private byte[] coverImage;
+    private String coverImage;
 
 //    private String status;
 
