@@ -12,6 +12,6 @@ import java.util.List;
 public interface ConcessionRepository extends JpaRepository<Concession, Long> {
 
     // Search Concessions by name
-    @Query("SELECT c FROM Concession c WHERE c.itemName LIKE %:name%")
-    List<Concession> getConcessionsByName(@Param("name") String name);
+//    @Query("SELECT c FROM Concession c WHERE c.itemName LIKE %:name%")
+    List<Concession> getConcessionsByItemName(@Param("name") String name);
 }

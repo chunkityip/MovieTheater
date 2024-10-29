@@ -17,14 +17,15 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "movie_title")
     private String title;
-    private String description;
-    @JoinColumn(name = "seat_id")
-    @OneToMany
-    private Seat[] availableSeats = new Seat[30];
 
+    @Column(name = "movie_description")
+    private String description;
+
+    @Lob
     @Column(name = "cover_image")
-    private String coverImage;
+    private byte[] coverImage;
 
 //    private String status;
 

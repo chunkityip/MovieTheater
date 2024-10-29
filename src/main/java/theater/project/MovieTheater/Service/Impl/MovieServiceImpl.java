@@ -1,7 +1,9 @@
 package theater.project.MovieTheater.Service.Impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import theater.project.MovieTheater.API.DTO.Movie.CreateMovieRequestDTO;
 import theater.project.MovieTheater.API.DTO.Movie.ShowMovieResponseDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Movie;
@@ -9,61 +11,26 @@ import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
 import theater.project.MovieTheater.Exception.MovieNotFoundException;
 import theater.project.MovieTheater.Service.MovieService;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
-
-//import static jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle.title;
-
 
 @Service
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
-    private MovieRepository movieRepository;
-
-    // movie by id to connect the date
-    @Override
-    public Movie getMovieById(long id) throws MovieNotFoundException {
-        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException("Movie not found"));
-
-        // under this convert the above movie entity into a showmovieresponseDTO
-        // before that research how to store image in postgres if having difficulty then take cover image off entity and dont store
-    }
-
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
-    }
+    private final MovieRepository movieRepository;
 
     @Override
-    public ShowMovieResponseDTO getMovieById(Long id) {
-        return null;
-    }
-
-    @Override
-    public ShowMovieResponseDTO getMovieByTitle(String title) {
-        return null;
-    }
-
-    @Override
-    public String deleteMovie(String title) {
-//        Movie movie = movieRepository.findByTitle(title)
-//                .OrElseThrow(() -)
-        return null;
-    }
-
-    @Override
-    public CreateMovieRequestDTO createMovie(CreateMovieRequestDTO createMovieRequestDTO) {
-        // create movie entity from DTO
-//        title, description, and image , multiple images?
-//        save movie entity
-
-//        if (movieRepository.existsById(createMovieRequestDTO.getId())) {
-//            throw new IllegalArgumentException("Id already in use");
-//        }
-//        convert entity to DTO . Movie repo
+    public CreateMovieRequestDTO createMovie(String title, String description, MultipartFile coverImage) throws IOException {
+        byte[] imageBytes = null;
+        if (coverImage != null && !coverImage.isEmpty()) {
+            imageBytes = coverImage.getBytes();
+        }
 
         Movie newMovie = Movie.builder()
-                .title(createMovieRequestDTO.getTitle())
-                .description(createMovieRequestDTO.getDescription())
-                .coverImage(createMovieRequestDTO.getCoverImage())
+                .title(title)
+                .description(description)
+                .coverImage(imageBytes)
                 .build();
 
         Movie savedMovie = movieRepository.save(newMovie);
@@ -72,20 +39,33 @@ public class MovieServiceImpl implements MovieService {
                 .id(savedMovie.getId())
                 .title(savedMovie.getTitle())
                 .description(savedMovie.getDescription())
-                .coverImage(savedMovie.getCoverImage())
                 .build();
+    }
 
-//    maybe update movie?
+    @Override
+    public ShowMovieResponseDTO getMovieById(long id) throws MovieNotFoundException {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with id: " + id));
+
+        String base64Image = null;
+        if (movie.getCoverImage() != null) {
+            base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(movie.getCoverImage());
+        }
+
+        return ShowMovieResponseDTO.builder()
+                .id(movie.getId())
+                .title(movie.getTitle())
+                .description(movie.getDescription())
+                .coverImageBase64(base64Image)
+                .build();
+    }
 
 
-//    crud,create movie, update movie (make changes),  get movie, delete movie,
-//   function in interface and override
-//get all movies, controller, DTO
-// /movie, create
-//@autowired, inject repo, SQL query
-//     get
-//    post, update, delete
-
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
 
     }
 }
+
+
+

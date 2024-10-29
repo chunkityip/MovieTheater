@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShowMovieResponseDTO {
     private long id;
-
     private String title;
     private String description;
-
-
-
+    private String coverImageBase64; // Changed from byte[] to String
 }
+

@@ -12,25 +12,29 @@ public interface SeatService {
     Seat getSeatBySeatId(Long seatId);
     Seat getSeatBySeatNumber(String seatNumber);
 
-    List<Seat> getAllSeatsByMovieId(Long movieId);
-    List<Seat> getAvailableSeatsByMovieId(Long movieId);
-    List<Seat> getOccupiedSeatsByMovieId(Long movieId);
-    List<Seat> getDisabledSeatsByMovieId(Long movieId);
 
-    Status getSeatStatus(Long seatId);
+//    ***** BELOW METHODS ARE AVAILABLE ON SHOWING SERVICE *****
+//    List<Seat> getSeatsByShowingId(Long showingId);
+//    List<Seat> getAvailableSeatsByShowingId(Long showingId);
+//    List<Seat> getOccupiedSeatsByShowingId(Long showingId);
+//    List<Seat> getDisabledSeatsByShowingId(Long showingId);
+
+    Status getSeatStatusBySeatId(Long seatId);
     boolean isAvailable(Long seatId);
     boolean isOccupied(Long seatId);
     boolean isSelected(Long seatId);
+    boolean isDisabled(Long seatId);
+
 
     void occupySeat(Long seatId);
     void selectSeat(Long seatId);
     void unselectSeat(Long seatId);
     void disableSeat(Long seatId);
 
-    void occupySeatsInBulk(List<Long> seatIds);
-    void selectSeatsInBulk(List<Long> seatIds);
-    void unselectSeatsInBulk(List<Long> seatIds);
-    void disableSeatsInBulk(List<Long> seatIds);
+    List<String> occupySeatsInBulkBySeatIds(List<Long> seatIds);
+    List<String> selectSeatsInBulkBySeatIds(List<Long> seatIds);
+    List<String> unselectSeatsInBulkBySeatIds(List<Long> seatIds);
+    List<String> disableSeatsInBulkBySeatIds(List<Long> seatIds);
 
 
 
