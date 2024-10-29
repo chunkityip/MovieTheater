@@ -14,6 +14,6 @@ public class CreateMovieRequestDTO {
     private Long id;
     private String title;
     private String description;
-    @Lob
-    private byte[] coverImage;
+
+    private String coverImage;
 }

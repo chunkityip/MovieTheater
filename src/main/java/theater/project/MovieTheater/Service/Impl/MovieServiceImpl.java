@@ -12,6 +12,7 @@ import theater.project.MovieTheater.Service.MovieService;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,31 +59,12 @@ public class MovieServiceImpl implements MovieService {
                 .build();
     }
 
-    @Override
-    public ShowMovieResponseDTO getMovieDTOByTitle(String title) throws MovieNotFoundException {
-        Movie movie = movieRepository.getReferenceByTitle(title);
-        if (movie == null){
-            throw new MovieNotFoundException("Movie not found with title: " + title);
-        } else {
-            String base64Image = null;
-            if (movie.getCoverImage() != null) {
-                base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(movie.getCoverImage());
-            }
-            return ShowMovieResponseDTO.builder()
-                    .id(movie.getId())
-                    .title(movie.getTitle())
-                    .description(movie.getDescription())
-                    .coverImageBase64(base64Image)
-                    .build();
-        }
-    }
-    @Override
-    public Movie getMovieByTitle(String title) throws MovieNotFoundException {
-        Movie movie = movieRepository.getReferenceByTitle(title);
-        if (movie == null){
-            throw new MovieNotFoundException("Movie not found with title: " + title);
-        } else {
-            return movie;
-        }
+
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+
     }
 }
+
+
+
