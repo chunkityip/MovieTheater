@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateMovieRequestDTO {
+    private Long id;
     private String title;
     private String description;
     @Lob
