@@ -28,6 +28,7 @@ public class ShowingController {
     private final SeatService seatService;
     private final MovieRepository movieRepository;
 
+    // I need to do something
     @PostMapping("/add_new")
     public AddShowingDTO addNewShowing(@PathVariable("movie_id") Long movieId,
                                        @RequestBody AddShowingDTO requestDTO) {
