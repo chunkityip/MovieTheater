@@ -29,14 +29,22 @@ public class ShowingController {
     private final MovieRepository movieRepository;
 
     @PostMapping("/add_new")
-    public AddShowingDTO addNewShowing(@RequestBody AddShowingDTO requestDTO){
+    public AddShowingDTO addNewShowing(@PathVariable("movie_id") Long movieId,
+                                       @RequestBody AddShowingDTO requestDTO) {
+        // Verify that movieId from path matches requestDTO.getMovieId()
+        if (!movieId.equals(requestDTO.getMovieId())) {
+            throw new IllegalArgumentException("Movie ID in path does not match movie ID in request body");
+        }
+
         Showing showingToAdd = Showing.builder()
-                .movie(movieRepository.getReferenceById(requestDTO.getMovieId()))
+                .movie(movieRepository.getReferenceById(movieId)) // Use movieId from path
                 .showingDate(requestDTO.getDate())
                 .showingTime(requestDTO.getTime())
                 .seats(requestDTO.getSeats())
                 .build();
+
         Showing addedShowing = showingService.addNewShowing(showingToAdd);
+
         return AddShowingDTO.builder()
                 .movieId(addedShowing.getMovie().getId())
                 .date(addedShowing.getShowingDate())
@@ -44,6 +52,7 @@ public class ShowingController {
                 .seats(addedShowing.getSeats())
                 .build();
     }
+
 
     @GetMapping
     public List<LocalDate> getShowingDatesByMovieId(@PathVariable Long movieId){
