@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Enum.Status;
 import theater.project.MovieTheater.DataPersistent.Repo.SeatRepository;
+import theater.project.MovieTheater.Exception.SeatNotFoundException;
+import theater.project.MovieTheater.Exception.TicketNotFoundException;
 import theater.project.MovieTheater.Service.SeatService;
 
 import java.util.ArrayList;
@@ -19,12 +21,18 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     public Seat getSeatBySeatId(Long seatId) {
-        return seatRepository.getSeatById(seatId);
+        Seat seat = seatRepository.getSeatById(seatId);
+        if (seat == null){
+            throw new SeatNotFoundException("Seat Not Found by Seat Id: " + seatId);
+        } else return seat;
     }
 
     @Override
     public Seat getSeatBySeatNumber(String seatNumber) {
-        return seatRepository.getSeatBySeatNumber(seatNumber);
+        Seat seat = seatRepository.getSeatBySeatNumber(seatNumber);
+        if (seat == null){
+            throw new SeatNotFoundException("Seat Not Found by Seat Number: " + seatNumber);
+        } else return seat;
     }
 
     @Override
