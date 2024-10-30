@@ -53,9 +53,11 @@ public interface ShowingService {
     boolean isShowingSoldOut(Long showingId);
     boolean isShowingCompleted(Long showingId);
 
+    Showing addNewShowing(Showing showing);
+
 
     // CK part
-    List<String> getAvailableDates(Long movieId);
-    List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date);
-    Showing addNewShowing(Showing showing);
+//    List<String> getAvailableDates(Long movieId);
+//    List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date);
+//    Showing addNewShowing(Showing showing);
 }

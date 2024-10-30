@@ -18,6 +18,6 @@ import java.util.List;
 public class AddShowingDTO {
     private Long movieId;
     private LocalDate date;
-    private LocalTime time;
+    private TimeSlotDTO timeSlot;
 }
 

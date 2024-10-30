@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TimeSlotDTO {
-    private String time;
+    private String time; // e.g., "08:50:55"
     private boolean available;
 }

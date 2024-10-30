@@ -4,26 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import theater.project.MovieTheater.API.DTO.Showing.AllSeatStatusResponseDTO;
 import theater.project.MovieTheater.API.DTO.Showing.ShowingSelectionResponseDTO;
-import theater.project.MovieTheater.API.DTO.Showing.TimeSlotDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
 import theater.project.MovieTheater.DataPersistent.Enum.Status;
 import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.SeatRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.ShowingRepository;
-import theater.project.MovieTheater.Exception.SeatNotFoundException;
 import theater.project.MovieTheater.Exception.ShowingNotFoundException;
 import theater.project.MovieTheater.Service.ShowingService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.apache.catalina.manager.StatusTransformer.formatTime;
 
 @Service
 @RequiredArgsConstructor
@@ -121,10 +114,6 @@ public class ShowingServiceImpl implements ShowingService {
 
     }
 
-//    @Override
-//    public Showing addNewShowing(Showing showing) {
-//        return showingRepository.save(showing);
-//    }
 
     @Override
     public void deleteShowing(Long showingId) {
@@ -291,18 +280,18 @@ public class ShowingServiceImpl implements ShowingService {
     }
 
     // CK part
-    @Override
-    public List<String> getAvailableDates(Long movieId) {
-        return showingRepository.findAvailableDatesByMovieId(movieId)
-                .stream()
-                .map(date -> date.format(DateTimeFormatter.ISO_DATE))
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<String> getAvailableDates(Long movieId) {
+//        return showingRepository.findAvailableDatesByMovieId(movieId)
+//                .stream()
+//                .map(date -> date.format(DateTimeFormatter.ISO_DATE))
+//                .collect(Collectors.toList());
+//    }
 
-    @Override
-    public List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date) {
-        return null;
-    }
+//    @Override
+//    public List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date) {
+//        return null;
+//    }
 
 //    @Override
 //    public List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date) {
@@ -357,9 +346,9 @@ public class ShowingServiceImpl implements ShowingService {
         // Example: Creating seats for rows A-J, seats 1-10
         for (char row = 'A'; row <= 'J'; row++) {
             for (int seatNum = 1; seatNum <= 10; seatNum++) {
+                String seatNumber = row + Integer.toString(seatNum); // e.g., A1, A2, ..., J10
                 Seat seat = Seat.builder()
-                        .rowNumber(String.valueOf(row))
-                        .seatNumber(seatNum)
+                        .seatNumber(seatNumber)
                         .seatStatus(Status.AVAILABLE)
                         .build();
                 seats.add(seat);
