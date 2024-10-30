@@ -4,8 +4,8 @@ public enum Status {
     /*
     FOR MOVIES
      */
-    CURRENT,            // 0
-    UPCOMING,           // 1
+    //CURRENT,            // 0
+    //UPCOMING,           // 1
 
 
     /*
