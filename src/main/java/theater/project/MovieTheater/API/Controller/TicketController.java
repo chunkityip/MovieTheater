@@ -34,20 +34,20 @@ public class TicketController {
         return ticketService.getAllTickets();
     }
 
-    @PostMapping("/generate")
-    public ResponseEntity<GeneratedTicketDTO> generateTicket(
-            @RequestParam("movieTitle") String movieTitle,
-            @RequestParam("showDate") LocalDate showDate,
-            @RequestParam("showTime") LocalTime showTime,
-            @RequestParam("seatNumber") String seatNumber)
-            throws MovieNotFoundException {
-
-        GeneratedTicketDTO generatedTicket = ticketService.generateTicket(
-                movieService.getMovieByTitle(movieTitle),
-                showDate, showTime, 25.00,
-                seatService.getSeatBySeatNumber(seatNumber));
-        return ResponseEntity.status(HttpStatus.CREATED).body(generatedTicket);
-    }
+//    @PostMapping("/generate")
+//    public ResponseEntity<GeneratedTicketDTO> generateTicket(
+//            @RequestParam("movieTitle") String movieTitle,
+//            @RequestParam("showDate") LocalDate showDate,
+//            @RequestParam("showTime") LocalTime showTime,
+//            @RequestParam("seatNumber") String seatNumber)
+//            throws MovieNotFoundException {
+//
+//        GeneratedTicketDTO generatedTicket = ticketService.generateTicket(
+//                movieService.getMovieByTitle(movieTitle),
+//                showDate, showTime, 25.00,
+//                seatService.getSeatBySeatNumber(seatNumber));
+//        return ResponseEntity.status(HttpStatus.CREATED).body(generatedTicket);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GeneratedTicketDTO> getTicketById(@PathVariable Long id) {
