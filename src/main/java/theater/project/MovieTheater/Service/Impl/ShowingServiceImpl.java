@@ -10,6 +10,8 @@ import theater.project.MovieTheater.DataPersistent.Enum.Status;
 import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.SeatRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.ShowingRepository;
+import theater.project.MovieTheater.Exception.SeatNotFoundException;
+import theater.project.MovieTheater.Exception.ShowingNotFoundException;
 import theater.project.MovieTheater.Service.ShowingService;
 
 import java.time.LocalDate;
@@ -27,7 +29,10 @@ public class ShowingServiceImpl implements ShowingService {
 
     @Override
     public Showing getShowingById(Long showingId) {
-        return showingRepository.getShowingById(showingId);
+        Showing showing = showingRepository.getShowingById(showingId);
+        if (showing == null){
+            throw new ShowingNotFoundException("Showing Not Found by Showing Id: " + showingId);
+        } else return showing;
     }
 
     @Override
