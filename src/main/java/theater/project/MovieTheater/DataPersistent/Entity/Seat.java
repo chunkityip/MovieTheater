@@ -21,7 +21,7 @@ public class Seat {
 //    @Column(name="seat_number")
     private String seatNumber;
 
-//    @Column(name="seat_status")
+    @Column(name="seat_status")
     private Status seatStatus;
 
     @JoinColumn(name="showing_id")

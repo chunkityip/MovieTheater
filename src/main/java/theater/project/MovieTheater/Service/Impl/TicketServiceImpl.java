@@ -3,12 +3,16 @@ package theater.project.MovieTheater.Service.Impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import theater.project.MovieTheater.API.DTO.Ticket.GeneratedTicketDTO;
+import theater.project.MovieTheater.API.DTO.Ticket.TicketInfoDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Movie;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
+import theater.project.MovieTheater.DataPersistent.Entity.Showing;
 import theater.project.MovieTheater.DataPersistent.Entity.Ticket;
 import theater.project.MovieTheater.DataPersistent.Enum.Status;
+import theater.project.MovieTheater.DataPersistent.Repo.ShowingRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.TicketRepository;
 import theater.project.MovieTheater.Exception.TicketNotFoundException;
+import theater.project.MovieTheater.Service.ShowingService;
 import theater.project.MovieTheater.Service.TicketService;
 
 import java.time.LocalDate;
@@ -21,7 +25,7 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
-//    private final SeatRepository seatRepository;
+    private final ShowingService showingService;
 //    private final MovieRepository movieRepository;
 
     @Override
@@ -102,6 +106,22 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> getAllTicketsByTime(LocalTime time) {
         return ticketRepository.getTicketsByTime(time);
+    }
+
+    @Override
+    public List<TicketInfoDTO> getUnsavedTicketInfo(Showing showing) {
+        List<Seat> selectedSeatsByShowing = showingService.getSelectedSeatsForShowing(showing.getId());
+        List<TicketInfoDTO> ticketInfoDTOs = new ArrayList<>();
+        for (Seat seat : selectedSeatsByShowing){
+            TicketInfoDTO ticketInfoDTO = TicketInfoDTO.builder()
+                    .movie(showing.getMovie())
+                    .showing(showing)
+                    .seatId(seat.getId())
+                    .build();
+
+            ticketInfoDTOs.add(ticketInfoDTO);
+        }
+        return ticketInfoDTOs;
     }
 
     @Override

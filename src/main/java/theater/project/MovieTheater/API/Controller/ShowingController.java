@@ -80,16 +80,17 @@ public class ShowingController {
     }
 
     @GetMapping("/{showing_date}/{showing_time}")
-    public Long getShowingIdByMovieWithDateAndTime(@PathVariable Long movieId, @PathVariable LocalDate date, @PathVariable LocalTime time){
+    public AllSeatStatusResponseDTO getAllSeatStatusByMovieWithDateAndTime(@PathVariable Long movieId, @PathVariable LocalDate date, @PathVariable LocalTime time){
 
         ShowingSelectionResponseDTO responseDTO = showingService.getShowingByMovieWithDateAndTime(movieId, date, time);
-        return responseDTO.getShowingId();
-    }
-
-    @GetMapping("/{showing_id}/allSeats")
-    public AllSeatStatusResponseDTO getAllSeatStatus(@PathVariable Long showingId){
+        Long showingId = responseDTO.getShowingId();
         return showingService.getAllSeatsForShowing(showingId);
     }
+
+//    @GetMapping("/{showing_id}/allSeats")
+//    public AllSeatStatusResponseDTO getAllSeatStatus(@PathVariable Long showingId){
+//        return showingService.getAllSeatsForShowing(showingId);
+//    }
 
     @PostMapping("/{showing_id}/allSeats")
     public SeatSelectionResponseDTO seatSelection(@RequestBody SeatSelectionRequestDTO requestDTO){

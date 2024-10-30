@@ -107,7 +107,21 @@ public class ShowingServiceImpl implements ShowingService {
 
     @Override
     public Showing addNewShowing(Showing showing) {
+        showing.setSeats(createDefaultSeats());
         return showingRepository.save(showing);
+    }
+
+    private List<Seat> createDefaultSeats() {
+        List<Seat> seats = new ArrayList<>();
+        // Creating 25 default seats, the seat number will be just the numbers from 1 to 25 but String type.
+        for (int seatNum = 1; seatNum <= 25; seatNum++) {
+            Seat seat = Seat.builder()
+                    .seatNumber(Integer.toString(seatNum))
+                    .seatStatus(Status.AVAILABLE)
+                    .build();
+            seats.add(seat);
+        }
+        return seats;
     }
 
     @Override
