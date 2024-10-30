@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateConcessionRequestDTO {
-    private Long id;
+    private String itemName;
     private double price;
 }
