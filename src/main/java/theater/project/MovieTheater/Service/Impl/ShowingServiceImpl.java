@@ -22,6 +22,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ShowingServiceImpl implements ShowingService {
+    //testing
 
     private final ShowingRepository showingRepository;
     private final MovieRepository movieRepository;
