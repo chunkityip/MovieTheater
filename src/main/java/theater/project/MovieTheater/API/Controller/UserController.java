@@ -6,9 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import theater.project.MovieTheater.API.DTO.User.CreateAdminRequestDTO;
 import theater.project.MovieTheater.API.DTO.User.LoginRequest;
+import theater.project.MovieTheater.API.DTO.User.UserProfileDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.User;
+import theater.project.MovieTheater.DataPersistent.Repo.UserRepository;
 import theater.project.MovieTheater.Service.Impl.UserServiceImpl;
 import theater.project.MovieTheater.Service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -17,6 +21,7 @@ import theater.project.MovieTheater.Service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository repo;
 
     @PostMapping("/register")
     public ResponseEntity<CreateAdminRequestDTO> registerUser(@RequestBody CreateAdminRequestDTO requestDTO) {
@@ -31,8 +36,24 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
+<<<<<<< HEAD
     public ResponseEntity<User> getUserProfile(@PathVariable Long id) {
         User user = userService.getUserById(id);  // You'll need to implement this in UserService
         return ResponseEntity.ok(user);
     }
+=======
+    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable Long id) {
+        UserProfileDTO userProfile = userService.getUserProfile(id);
+        return ResponseEntity.ok(userProfile);
+    }
+
+
+//    @GetMapping("/profile/{adminId}") // Or any other suitable endpoint
+//    public ResponseEntity<UserProfileDTO> getAdminProfile(@PathVariable Long id) {
+//        UserProfileDTO adminProfile = userService.getAdminProfile(id);
+//        return ResponseEntity.ok(adminProfile);
+//    }
+
+
+>>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 }

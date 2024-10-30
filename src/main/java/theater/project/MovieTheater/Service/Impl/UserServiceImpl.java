@@ -2,14 +2,17 @@ package theater.project.MovieTheater.Service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import theater.project.MovieTheater.API.DTO.User.AdminProfileDTO;
 import theater.project.MovieTheater.API.DTO.User.CreateAdminRequestDTO;
 import theater.project.MovieTheater.API.DTO.User.LoginRequest;
-import theater.project.MovieTheater.DataPersistent.Entity.User;
-import theater.project.MovieTheater.DataPersistent.Repo.UserRepository;
+import theater.project.MovieTheater.API.DTO.User.UserProfileDTO;
+import theater.project.MovieTheater.DataPersistent.Entity.*;
+import theater.project.MovieTheater.DataPersistent.Repo.*;
 import theater.project.MovieTheater.Exception.UserAlreadyExistsException;
 import theater.project.MovieTheater.Exception.UserNotFoundException;
 import theater.project.MovieTheater.Service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +20,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ConcessionRepository concessionRepository; // Make sure to create this repository
+    private final MovieRepository movieRepository; // Make sure to create this repository
+    private final PaymentRepository paymentRepository; // Make sure to create this repository
+    private final SeatRepository seatRepository; // Make sure to create this repository
+    private final TicketRepository ticketRepository; // Make sure to create this repository
 
     @Override
     public CreateAdminRequestDTO registerUser(CreateAdminRequestDTO requestDTO) {
@@ -47,12 +55,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+<<<<<<< HEAD
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found")); // Consider using a custom exception
     }
 
+=======
+    public UserProfileDTO getUserProfile(Long userId) {
+        User user = userRepository.getUserById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+>>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 
+        return UserProfileDTO.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
+    }
 
-
+    // For final Data Analyze
+//    @Override
+//    public AdminProfileDTO getAdminProfile(Long id) {
+//        // Fetch the admin profile if needed
+//        User adminUser = userRepository.getUserById(id)
+//                .orElseThrow(() -> new UserNotFoundException("Admin not found"));
+//
+//        // Fetch all the necessary data
+//        List<Concession> concessions = concessionRepository.findAll();
+//        List<Movie> movies = movieRepository.findAll();
+//        List<Payment> payments = paymentRepository.findAll();
+//        List<Seat> seats = seatRepository.findAll();
+//        List<Ticket> tickets = ticketRepository.findAll();
+//
+//        // Build and return the AdminProfileDTO
+//        return AdminProfileDTO.builder()
+//                .userProfile(UserProfileDTO.builder()
+//                        .id(adminUser.getId())
+//                        .name(adminUser.getName())
+//                        .email(adminUser.getEmail())
+//                        .build())
+//                .concessions(concessions)
+//                .movies(movies)
+//                .payments(payments)
+//                .seats(seats)
+//                .tickets(tickets)
+//                .build();
+//    }
 }

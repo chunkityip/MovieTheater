@@ -12,6 +12,10 @@ import theater.project.MovieTheater.Service.MovieService;
 
 import java.io.IOException;
 import java.util.Base64;
+<<<<<<< HEAD
+=======
+import java.util.List;
+>>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 
 @Service
 @RequiredArgsConstructor
@@ -57,4 +61,17 @@ public class MovieServiceImpl implements MovieService {
                 .coverImageBase64(base64Image)
                 .build();
     }
+<<<<<<< HEAD
 }
+=======
+
+
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+
+    }
+}
+
+
+
+>>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0

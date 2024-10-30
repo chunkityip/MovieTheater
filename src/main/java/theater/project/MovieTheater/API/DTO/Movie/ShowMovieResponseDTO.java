@@ -15,3 +15,4 @@ public class ShowMovieResponseDTO {
     private String description;
     private String coverImageBase64; // Changed from byte[] to String
 }
+
