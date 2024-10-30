@@ -144,7 +144,6 @@ public class ShowingController {
                 .movie(movieRepository.getReferenceById(movieId))
                 .showingDate(requestDTO.getDate())
                 .showingTime(requestDTO.getTime())
-                .seats(requestDTO.getSeats())
                 .build();
 
         Showing addedShowing = showingService.addNewShowing(showingToAdd);
@@ -155,9 +154,6 @@ public class ShowingController {
                 .movieTitle(addedShowing.getMovie().getTitle())
                 .showingDate(addedShowing.getShowingDate())
                 .showingTime(addedShowing.getShowingTime())
-                .seats(addedShowing.getSeats())
                 .build());
     }
-
-
 }

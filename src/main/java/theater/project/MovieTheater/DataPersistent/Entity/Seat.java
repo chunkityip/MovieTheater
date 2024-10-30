@@ -19,7 +19,8 @@ public class Seat {
     private long id;
 
 //    @Column(name="seat_number")
-    private String seatNumber;
+    private int seatNumber;
+    private String rowNumber;
 
 //    @Column(name="seat_status")
     private Status seatStatus;

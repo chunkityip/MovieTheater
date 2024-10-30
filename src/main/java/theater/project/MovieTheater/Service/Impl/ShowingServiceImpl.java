@@ -259,6 +259,11 @@ public class ShowingServiceImpl implements ShowingService {
         return selectedSeats;
     }
 
+    @Override
+    public boolean isShowingSoldOut(Long showingId) {
+        return false;
+    }
+
 //    @Override
 //    public boolean isShowingSoldOut(Long showingId) {
 //        List<Seat> listOfSeats = showingRepository.getReferenceById(showingId).getSeats();
@@ -296,19 +301,24 @@ public class ShowingServiceImpl implements ShowingService {
 
     @Override
     public List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date) {
-        // Get all booked times for this movie and date
-        Set<LocalTime> bookedTimes = showingRepository.findBookedTimesByMovieIdAndDate(movieId, date)
-                .stream()
-                .collect(Collectors.toSet());
-
-        // Convert standard times to DTOs, marking them as available or not
-        return STANDARD_SHOWING_TIMES.stream()
-                .map(time -> TimeSlotDTO.builder()
-                        .time(formatTime(time))
-                        .available(!bookedTimes.contains(time))
-                        .build())
-                .collect(Collectors.toList());
+        return null;
     }
+
+//    @Override
+//    public List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date) {
+//        // Get all booked times for this movie and date
+//        Set<LocalTime> bookedTimes = showingRepository.findBookedTimesByMovieIdAndDate(movieId, date)
+//                .stream()
+//                .collect(Collectors.toSet());
+//
+//        // Convert standard times to DTOs, marking them as available or not
+//        return STANDARD_SHOWING_TIMES.stream()
+//                .map(time -> TimeSlotDTO.builder()
+//                        .time(formatTime(time))
+//                        .available(!bookedTimes.contains(time))
+//                        .build())
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public Showing addNewShowing(Showing showing) {
@@ -327,20 +337,34 @@ public class ShowingServiceImpl implements ShowingService {
             throw new IllegalStateException("This time slot is already booked");
         }
 
-        // Save the showing first
+        // Create a default set of seats based on your theater configuration
+        List<Seat> defaultSeats = createDefaultSeats(showing);
+        showing.setSeats(defaultSeats);
+
+        // Save the showing
         Showing savedShowing = showingRepository.save(showing);
 
-        // Initialize seats for this showing
-        List<Seat> seats = showing.getSeats().stream()
-                .map(seat -> {
-                    seat.setShowing(savedShowing);
-                    seat.setSeatStatus(Status.AVAILABLE);
-                    return seat;
-                })
-                .collect(Collectors.toList());
-
-        seatRepository.saveAll(seats);
+        // Set the showing reference and save seats
+        defaultSeats.forEach(seat -> seat.setShowing(savedShowing));
+        seatRepository.saveAll(defaultSeats);
 
         return savedShowing;
+    }
+
+    // Helper method to create default seats
+    private List<Seat> createDefaultSeats(Showing showing) {
+        List<Seat> seats = new ArrayList<>();
+        // Example: Creating seats for rows A-J, seats 1-10
+        for (char row = 'A'; row <= 'J'; row++) {
+            for (int seatNum = 1; seatNum <= 10; seatNum++) {
+                Seat seat = Seat.builder()
+                        .rowNumber(String.valueOf(row))
+                        .seatNumber(seatNum)
+                        .seatStatus(Status.AVAILABLE)
+                        .build();
+                seats.add(seat);
+            }
+        }
+        return seats;
     }
 }
