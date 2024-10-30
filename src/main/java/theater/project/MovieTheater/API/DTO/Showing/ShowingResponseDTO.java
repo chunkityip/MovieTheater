@@ -8,16 +8,17 @@ import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddShowingDTO {
+public class ShowingResponseDTO {
+    private Long id;
     private Long movieId;
-    private LocalDate date;
-    private TimeSlotDTO timeSlot;
+    private String movieTitle;
+    private LocalDate showingDate;
+    private LocalTime showingTime;
+    private List<Seat> seats;
 }
-
