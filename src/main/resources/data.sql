@@ -1,0 +1,2 @@
+insert into movies(id, movie_description, movie_title, cover_image)
+values (0, 'A Star Wars Movie', 'Star Wars', 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/football%2Csoccer%2Csport%2Cevent-design-template-31189bebe42fe7f743327895731b60ae_screen.jpg')
