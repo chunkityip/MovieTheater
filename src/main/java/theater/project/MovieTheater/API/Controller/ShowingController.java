@@ -69,7 +69,7 @@ public class ShowingController {
         return timesToShowByMovieAndDate;
     }
 
-    @PostMapping("/{showing_date}/{showing_time}")
+    @GetMapping("/{showing_date}/{showing_time}")
     public Long getShowingIdByMovieWithDateAndTime(@PathVariable Long movieId, @PathVariable LocalDate date, @PathVariable LocalTime time){
 
         ShowingSelectionResponseDTO responseDTO = showingService.getShowingByMovieWithDateAndTime(movieId, date, time);

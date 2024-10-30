@@ -6,6 +6,7 @@ import theater.project.MovieTheater.API.DTO.Ticket.GeneratedTicketDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Movie;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Ticket;
+import theater.project.MovieTheater.DataPersistent.Enum.Status;
 import theater.project.MovieTheater.DataPersistent.Repo.TicketRepository;
 import theater.project.MovieTheater.Exception.TicketNotFoundException;
 import theater.project.MovieTheater.Service.TicketService;
@@ -33,6 +34,8 @@ public class TicketServiceImpl implements TicketService {
                                 .seat(seat)
                                 .build();
         Ticket savedTicket = ticketRepository.save(ticketToSave);
+        savedTicket.getSeat().setSeatStatus(Status.OCCUPIED);
+
         return GeneratedTicketDTO.builder()
                 .movieTitle(savedTicket.getMovie().getTitle())
                 .showDate(savedTicket.getDate())
