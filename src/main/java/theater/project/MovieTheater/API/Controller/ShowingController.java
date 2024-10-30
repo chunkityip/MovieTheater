@@ -1,12 +1,12 @@
 package theater.project.MovieTheater.API.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import theater.project.MovieTheater.API.DTO.Seat.SeatSelectionRequestDTO;
 import theater.project.MovieTheater.API.DTO.Seat.SeatSelectionResponseDTO;
-import theater.project.MovieTheater.API.DTO.Showing.AddShowingDTO;
-import theater.project.MovieTheater.API.DTO.Showing.AllSeatStatusResponseDTO;
-import theater.project.MovieTheater.API.DTO.Showing.ShowingSelectionResponseDTO;
+import theater.project.MovieTheater.API.DTO.Showing.*;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
 import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
@@ -28,31 +28,31 @@ public class ShowingController {
     private final SeatService seatService;
     private final MovieRepository movieRepository;
 
-    // I need to do something
-    @PostMapping("/add_new")
-    public AddShowingDTO addNewShowing(@PathVariable("movie_id") Long movieId,
-                                       @RequestBody AddShowingDTO requestDTO) {
-        // Verify that movieId from path matches requestDTO.getMovieId()
-        if (!movieId.equals(requestDTO.getMovieId())) {
-            throw new IllegalArgumentException("Movie ID in path does not match movie ID in request body");
-        }
 
-        Showing showingToAdd = Showing.builder()
-                .movie(movieRepository.getReferenceById(movieId)) // Use movieId from path
-                .showingDate(requestDTO.getDate())
-                .showingTime(requestDTO.getTime())
-                .seats(requestDTO.getSeats())
-                .build();
-
-        Showing addedShowing = showingService.addNewShowing(showingToAdd);
-
-        return AddShowingDTO.builder()
-                .movieId(addedShowing.getMovie().getId())
-                .date(addedShowing.getShowingDate())
-                .time(addedShowing.getShowingTime())
-                .seats(addedShowing.getSeats())
-                .build();
-    }
+//    @PostMapping("/add_new")
+//    public AddShowingDTO addNewShowing(@PathVariable("movie_id") Long movieId,
+//                                       @RequestBody AddShowingDTO requestDTO) {
+//        // Verify that movieId from path matches requestDTO.getMovieId()
+//        if (!movieId.equals(requestDTO.getMovieId())) {
+//            throw new IllegalArgumentException("Movie ID in path does not match movie ID in request body");
+//        }
+//
+//        Showing showingToAdd = Showing.builder()
+//                .movie(movieRepository.getReferenceById(movieId)) // Use movieId from path
+//                .showingDate(requestDTO.getDate())
+//                .showingTime(requestDTO.getTime())
+//                .seats(requestDTO.getSeats())
+//                .build();
+//
+//        Showing addedShowing = showingService.addNewShowing(showingToAdd);
+//
+//        return AddShowingDTO.builder()
+//                .movieId(addedShowing.getMovie().getId())
+//                .date(addedShowing.getShowingDate())
+//                .time(addedShowing.getShowingTime())
+//                .seats(addedShowing.getSeats())
+//                .build();
+//    }
 
 
     @GetMapping
@@ -100,6 +100,63 @@ public class ShowingController {
             listOfSelectedSeatIds.add(seat.getId());
         }
         return new SeatSelectionResponseDTO(listOfSelectedSeatIds);
+    }
+
+    // CK part
+    @GetMapping("/available-dates")
+    public ResponseEntity<List<String>> getAvailableDates(@PathVariable("movie_id") Long movieId) {
+        return ResponseEntity.ok(showingService.getAvailableDates(movieId));
+    }
+
+    @GetMapping("/available-times")
+    public ResponseEntity<List<TimeSlotDTO>> getAvailableTimeSlots(
+            @PathVariable("movie_id") Long movieId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(showingService.getAvailableTimeSlots(movieId, date));
+    }
+
+    @GetMapping("/availability")
+    public ResponseEntity<ShowingAvailabilityResponseDTO> getShowingAvailability(
+            @PathVariable("movie_id") Long movieId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        ShowingAvailabilityResponseDTO response = ShowingAvailabilityResponseDTO.builder()
+                .movieId(movieId)
+                .availableDates(showingService.getAvailableDates(movieId))
+                .availableTimeSlots(date != null ?
+                        showingService.getAvailableTimeSlots(movieId, date) :
+                        null)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/add_new")
+    public ResponseEntity<ShowingResponseDTO> addNewShowing(
+            @PathVariable("movie_id") Long movieId,
+            @RequestBody AddShowingDTO requestDTO) {
+
+        if (!movieId.equals(requestDTO.getMovieId())) {
+            throw new IllegalArgumentException("Movie ID in path does not match movie ID in request body");
+        }
+
+        Showing showingToAdd = Showing.builder()
+                .movie(movieRepository.getReferenceById(movieId))
+                .showingDate(requestDTO.getDate())
+                .showingTime(requestDTO.getTime())
+                .seats(requestDTO.getSeats())
+                .build();
+
+        Showing addedShowing = showingService.addNewShowing(showingToAdd);
+
+        return ResponseEntity.ok(ShowingResponseDTO.builder()
+                .id(addedShowing.getId())
+                .movieId(addedShowing.getMovie().getId())
+                .movieTitle(addedShowing.getMovie().getTitle())
+                .showingDate(addedShowing.getShowingDate())
+                .showingTime(addedShowing.getShowingTime())
+                .seats(addedShowing.getSeats())
+                .build());
     }
 
 

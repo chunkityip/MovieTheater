@@ -131,4 +131,76 @@ public class SeatServiceImpl implements SeatService {
         }
         return disabledSeatNumbers;
     }
+
+    @Override
+    public void occupySeat(Long seatId) {
+        Seat seat = getSeatBySeatId(seatId);
+        if (seat.getSeatStatus() != Status.SELECTED) {
+            throw new IllegalStateException("Seat must be SELECTED before being occupied");
+        }
+        seat.setSeatStatus(Status.OCCUPIED);
+        seatRepository.save(seat);
+    }
+
+    @Override
+    public void selectSeat(Long seatId) {
+        Seat seat = getSeatBySeatId(seatId);
+        if (seat.getSeatStatus() != Status.AVAILABLE) {
+            throw new IllegalStateException("Can only select AVAILABLE seats");
+        }
+        seat.setSeatStatus(Status.SELECTED);
+        seatRepository.save(seat);
+    }
+
+    @Override
+    public void unselectSeat(Long seatId) {
+        Seat seat = getSeatBySeatId(seatId);
+        if (seat.getSeatStatus() != Status.SELECTED) {
+            throw new IllegalStateException("Can only unselect SELECTED seats");
+        }
+        seat.setSeatStatus(Status.AVAILABLE);
+        seatRepository.save(seat);
+    }
+
+    @Override
+    public void disableSeat(Long seatId) {
+        Seat seat = getSeatBySeatId(seatId);
+        if (seat.getSeatStatus() != Status.AVAILABLE) {
+            throw new IllegalStateException("Can only disable AVAILABLE seats");
+        }
+        seat.setSeatStatus(Status.DISABLED);
+        seatRepository.save(seat);
+    }
+
+    @Override
+    public List<String> occupySeatsInBulkBySeatIds(List<Long> seatIds) {
+        List<Seat> seats = seatRepository.findAllById(seatIds);
+        List<String> occupiedSeatNumbers = new ArrayList<>();
+
+        seats.forEach(seat -> {
+            if (seat.getSeatStatus() == Status.SELECTED) {
+                seat.setSeatStatus(Status.OCCUPIED);
+                occupiedSeatNumbers.add(seat.getSeatNumber());
+            }
+        });
+
+        seatRepository.saveAll(seats);
+        return occupiedSeatNumbers;
+    }
+
+    @Override
+    public List<String> selectSeatsInBulkBySeatIds(List<Long> seatIds) {
+        List<Seat> seats = seatRepository.findAllById(seatIds);
+        List<String> selectedSeatNumbers = new ArrayList<>();
+
+        seats.forEach(seat -> {
+            if (seat.getSeatStatus() == Status.AVAILABLE) {
+                seat.setSeatStatus(Status.SELECTED);
+                selectedSeatNumbers.add(seat.getSeatNumber());
+            }
+        });
+
+        seatRepository.saveAll(seats);
+        return selectedSeatNumbers;
+    }
 }

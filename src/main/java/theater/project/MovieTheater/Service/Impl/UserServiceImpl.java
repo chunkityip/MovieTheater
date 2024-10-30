@@ -55,17 +55,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-<<<<<<< HEAD
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found")); // Consider using a custom exception
-    }
-
-=======
     public UserProfileDTO getUserProfile(Long userId) {
         User user = userRepository.getUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 
         return UserProfileDTO.builder()
                 .id(user.getId())

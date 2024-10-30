@@ -3,6 +3,7 @@ package theater.project.MovieTheater.Service;
 import org.springframework.stereotype.Service;
 import theater.project.MovieTheater.API.DTO.Showing.AllSeatStatusResponseDTO;
 import theater.project.MovieTheater.API.DTO.Showing.ShowingSelectionResponseDTO;
+import theater.project.MovieTheater.API.DTO.Showing.TimeSlotDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
 
@@ -25,7 +26,7 @@ public interface ShowingService {
 
 
     // ADMIN
-    Showing addNewShowing(Showing showing);
+//    Showing addNewShowing(Showing showing);
     void deleteShowing(Long showingId);
 
     List<Showing> addMultipleNewShowings(List<Showing> showings);
@@ -52,4 +53,9 @@ public interface ShowingService {
     boolean isShowingSoldOut(Long showingId);
     boolean isShowingCompleted(Long showingId);
 
+
+    // CK part
+    List<String> getAvailableDates(Long movieId);
+    List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date);
+    Showing addNewShowing(Showing showing);
 }
