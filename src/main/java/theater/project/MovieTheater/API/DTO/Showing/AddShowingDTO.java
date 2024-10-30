@@ -19,5 +19,5 @@ public class AddShowingDTO {
     private Long movieId;
     private LocalDate date;
     private LocalTime time;
-    private List<Seat> seats = new ArrayList<>(80);
+    private List<Seat> seats = new ArrayList<>();
 }

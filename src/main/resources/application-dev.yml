@@ -24,6 +24,10 @@ application:
     frontend:
       activation-url: http://localhost:4201/activate-account
 
+logging:
+  level:
+    org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG
+
 file:
   uploads:
     photos-output-path: ./uploads
