@@ -10,7 +10,6 @@ import theater.project.MovieTheater.DataPersistent.Enum.Status;
 import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.SeatRepository;
 import theater.project.MovieTheater.DataPersistent.Repo.ShowingRepository;
-import theater.project.MovieTheater.Exception.SeatNotFoundException;
 import theater.project.MovieTheater.Exception.ShowingNotFoundException;
 import theater.project.MovieTheater.Service.ShowingService;
 
@@ -26,6 +25,16 @@ public class ShowingServiceImpl implements ShowingService {
     private final ShowingRepository showingRepository;
     private final MovieRepository movieRepository;
     private final SeatRepository seatRepository;
+
+    // Define standard showing times
+    private static final List<LocalTime> STANDARD_SHOWING_TIMES = List.of(
+            LocalTime.of(10, 0),  // 10:00 AM
+            LocalTime.of(12, 0),  // 12:00 PM
+            LocalTime.of(14, 0),  // 2:00 PM
+            LocalTime.of(16, 0),  // 4:00 PM
+            LocalTime.of(18, 0),  // 6:00 PM
+            LocalTime.of(20, 0)   // 8:00 PM
+    );
 
     @Override
     public Showing getShowingById(Long showingId) {
@@ -105,10 +114,6 @@ public class ShowingServiceImpl implements ShowingService {
 
     }
 
-    @Override
-    public Showing addNewShowing(Showing showing) {
-        return showingRepository.save(showing);
-    }
 
     @Override
     public void deleteShowing(Long showingId) {
@@ -245,15 +250,20 @@ public class ShowingServiceImpl implements ShowingService {
 
     @Override
     public boolean isShowingSoldOut(Long showingId) {
-        List<Seat> listOfSeats = showingRepository.getReferenceById(showingId).getSeats();
-        List<Seat> listOfAvailableSeats = new ArrayList<>();
-        for(Seat seat : listOfSeats){
-            if(seat.getSeatStatus().equals(Status.AVAILABLE)){
-                listOfAvailableSeats.add(seat);
-            }
-        }
-        return listOfAvailableSeats.isEmpty();
+        return false;
     }
+
+//    @Override
+//    public boolean isShowingSoldOut(Long showingId) {
+//        List<Seat> listOfSeats = showingRepository.getReferenceById(showingId).getSeats();
+//        List<Seat> listOfAvailableSeats = new ArrayList<>();
+//        for(Seat seat : listOfSeats){
+//            if(seat.getSeatStatus().equals(Status.AVAILABLE)){
+//                listOfAvailableSeats.add(seat);
+//            }
+//        }
+//        return listOfAvailableSeats.isEmpty();
+//    }
 
     @Override
     public boolean isShowingCompleted(Long showingId) {
@@ -267,5 +277,83 @@ public class ShowingServiceImpl implements ShowingService {
         } else {
             return true;
         }
+    }
+
+    // CK part
+//    @Override
+//    public List<String> getAvailableDates(Long movieId) {
+//        return showingRepository.findAvailableDatesByMovieId(movieId)
+//                .stream()
+//                .map(date -> date.format(DateTimeFormatter.ISO_DATE))
+//                .collect(Collectors.toList());
+//    }
+
+//    @Override
+//    public List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date) {
+//        return null;
+//    }
+
+//    @Override
+//    public List<TimeSlotDTO> getAvailableTimeSlots(Long movieId, LocalDate date) {
+//        // Get all booked times for this movie and date
+//        Set<LocalTime> bookedTimes = showingRepository.findBookedTimesByMovieIdAndDate(movieId, date)
+//                .stream()
+//                .collect(Collectors.toSet());
+//
+//        // Convert standard times to DTOs, marking them as available or not
+//        return STANDARD_SHOWING_TIMES.stream()
+//                .map(time -> TimeSlotDTO.builder()
+//                        .time(formatTime(time))
+//                        .available(!bookedTimes.contains(time))
+//                        .build())
+//                .collect(Collectors.toList());
+//    }
+
+    @Override
+    public Showing addNewShowing(Showing showing) {
+        // Validate the showing time is one of our standard times
+        if (!STANDARD_SHOWING_TIMES.contains(showing.getShowingTime())) {
+            throw new IllegalArgumentException("Invalid showing time");
+        }
+
+        // Check if showing already exists
+        boolean timeSlotTaken = showingRepository.findBookedTimesByMovieIdAndDate(
+                        showing.getMovie().getId(),
+                        showing.getShowingDate())
+                .contains(showing.getShowingTime());
+
+        if (timeSlotTaken) {
+            throw new IllegalStateException("This time slot is already booked");
+        }
+
+        // Create a default set of seats based on your theater configuration
+        List<Seat> defaultSeats = createDefaultSeats(showing);
+        showing.setSeats(defaultSeats);
+
+        // Save the showing
+        Showing savedShowing = showingRepository.save(showing);
+
+        // Set the showing reference and save seats
+        defaultSeats.forEach(seat -> seat.setShowing(savedShowing));
+        seatRepository.saveAll(defaultSeats);
+
+        return savedShowing;
+    }
+
+    // Helper method to create default seats
+    private List<Seat> createDefaultSeats(Showing showing) {
+        List<Seat> seats = new ArrayList<>();
+        // Example: Creating seats for rows A-J, seats 1-10
+        for (char row = 'A'; row <= 'J'; row++) {
+            for (int seatNum = 1; seatNum <= 10; seatNum++) {
+                String seatNumber = row + Integer.toString(seatNum); // e.g., A1, A2, ..., J10
+                Seat seat = Seat.builder()
+                        .seatNumber(seatNumber)
+                        .seatStatus(Status.AVAILABLE)
+                        .build();
+                seats.add(seat);
+            }
+        }
+        return seats;
     }
 }

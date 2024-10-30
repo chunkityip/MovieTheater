@@ -11,22 +11,19 @@ import theater.project.MovieTheater.DataPersistent.Entity.Seat;
 import theater.project.MovieTheater.DataPersistent.Entity.Showing;
 import theater.project.MovieTheater.DataPersistent.Enum.Status;
 import theater.project.MovieTheater.DataPersistent.Repo.SeatRepository;
+import theater.project.MovieTheater.Service.SeatService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class SeatServiceImplTest {
 
-    @Mock
-    Showing showing;
     @MockBean
     private SeatRepository seatRepository;
     @Autowired
-    private SeatServiceImpl seatService;
+    private SeatService seatService;
     Seat seat0, seat1, seat2, seat3, seat4, seat5, seat6, seat7, seat8, seat9;
 
     @BeforeEach
