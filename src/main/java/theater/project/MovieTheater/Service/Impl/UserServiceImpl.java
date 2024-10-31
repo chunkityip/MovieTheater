@@ -54,6 +54,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
+    //Testing
+
     @Override
     public UserProfileDTO getUserProfile(Long userId) {
         User user = userRepository.getUserById(userId)
