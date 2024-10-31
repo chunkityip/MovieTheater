@@ -21,13 +21,7 @@ public class Movie {
 
     @Column(name = "movie_description")
     private String description;
-<<<<<<< HEAD
 
-    @JoinColumn(name = "seat_id")
-    @OneToMany
-    private Seat[] availableSeats = new Seat[30];
-=======
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 
     @Lob
     @Column(name = "cover_image")

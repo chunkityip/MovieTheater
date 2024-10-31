@@ -13,11 +13,10 @@ public interface UserService {
 
     CreateAdminRequestDTO registerUser(CreateAdminRequestDTO requestDTO);
     User loginUser(LoginRequest loginRequest);
-<<<<<<< HEAD
+
     User getUserById(Long id);
-=======
+
     UserProfileDTO getUserProfile(Long id);
 //    AdminProfileDTO getAdminProfile(Long id); // For final Data Analyze
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 
 }

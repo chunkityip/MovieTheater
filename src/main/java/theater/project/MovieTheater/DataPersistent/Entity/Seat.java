@@ -18,14 +18,12 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @Column(name="seat_number")
     private String seatNumber;
 
     @Column(name="seat_status")
     private Status seatStatus;
 
-    @JoinColumn(name="showing_id")
     @ManyToOne
+    @JoinColumn(name="showing_id")
     private Showing showing;
-
 }

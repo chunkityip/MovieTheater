@@ -27,7 +27,7 @@ public class Showing {
     private LocalDate showingDate;
     private LocalTime showingTime;
 
-//    @JoinColumn(name = "seat_id")
-    @ManyToMany
+    // Changed from @ManyToMany to @OneToMany
+    @OneToMany(mappedBy = "showing", cascade = CascadeType.ALL)
     private List<Seat> seats;
 }

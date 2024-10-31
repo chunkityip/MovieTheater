@@ -1,34 +1,26 @@
 package theater.project.MovieTheater.API.Controller;
 
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
-=======
-import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-<<<<<<< HEAD
 import org.springframework.web.multipart.MultipartFile;
 import theater.project.MovieTheater.API.DTO.Movie.CreateMovieRequestDTO;
 import theater.project.MovieTheater.API.DTO.Movie.ShowMovieResponseDTO;
-=======
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 import theater.project.MovieTheater.API.DTO.Movie.CreateMovieRequestDTO;
 import theater.project.MovieTheater.API.DTO.Movie.ShowMovieResponseDTO;
 import theater.project.MovieTheater.DataPersistent.Entity.Movie;
 import theater.project.MovieTheater.DataPersistent.Repo.MovieRepository;
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 import theater.project.MovieTheater.Exception.MovieNotFoundException;
 import theater.project.MovieTheater.Service.MovieService;
 
 import java.io.IOException;
-<<<<<<< HEAD
-=======
+
 import java.util.List;
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
+
 
 @RestController
 @RequestMapping("/movie")
@@ -37,10 +29,7 @@ import java.util.List;
 public class MovieController {
     private final MovieService movieService;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CreateMovieRequestDTO> createMovie(
             @RequestParam("title") String title,
@@ -59,16 +48,13 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
     }
-<<<<<<< HEAD
-}
-=======
 
     @GetMapping("/allMovies")
     public List<Movie> getAllMovies() {
         return movieService.getAllMovies();
     }
 
-
 }
 
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
+
+

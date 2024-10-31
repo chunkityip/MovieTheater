@@ -36,16 +36,11 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
-<<<<<<< HEAD
     public ResponseEntity<User> getUserProfile(@PathVariable Long id) {
         User user = userService.getUserById(id);  // You'll need to implement this in UserService
         return ResponseEntity.ok(user);
     }
-=======
-    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable Long id) {
-        UserProfileDTO userProfile = userService.getUserProfile(id);
-        return ResponseEntity.ok(userProfile);
-    }
+
 
 
 //    @GetMapping("/profile/{adminId}") // Or any other suitable endpoint
@@ -54,6 +49,4 @@ public class UserController {
 //        return ResponseEntity.ok(adminProfile);
 //    }
 
-
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 }

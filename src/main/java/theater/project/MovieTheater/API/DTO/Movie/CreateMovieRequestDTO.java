@@ -15,10 +15,5 @@ public class CreateMovieRequestDTO {
     private Long id;
     private String title;
     private String description;
-<<<<<<< HEAD
     private MultipartFile coverImage; // Changed to MultipartFile
-=======
-
-    private String coverImage;
->>>>>>> f7a3f8a1139843218f6926ac4c9298ba12cfb9a0
 }
