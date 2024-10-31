@@ -13,6 +13,4 @@ public interface MovieService {
     CreateMovieRequestDTO createMovie(String title, String description, MultipartFile coverImage) throws IOException;
     List<Movie> getAllMovies();
     ShowMovieResponseDTO getMovieById(long id) throws MovieNotFoundException;
-//    ShowMovieResponseDTO getMovieDTOByTitle(String title) throws MovieNotFoundException;
-//    Movie getMovieByTitle(String title) throws MovieNotFoundException;
 }

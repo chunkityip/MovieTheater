@@ -115,6 +115,7 @@ public class ShowingServiceImpl implements ShowingService {
     }
 
 
+
     @Override
     public void deleteShowing(Long showingId) {
         showingRepository.deleteById(showingId);
@@ -357,3 +358,4 @@ public class ShowingServiceImpl implements ShowingService {
         return seats;
     }
 }
+

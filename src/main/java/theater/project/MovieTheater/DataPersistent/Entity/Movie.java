@@ -15,7 +15,7 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "movie_title")
     private String title;
@@ -23,10 +23,11 @@ public class Movie {
     @Column(name = "movie_description")
     private String description;
 
+
     @Lob
     @Column(name = "cover_image")
     private byte[] coverImage;
 
-//    private String status;
-
+    @Transient
+    private String coverImageBase64;
 }

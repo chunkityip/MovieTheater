@@ -12,7 +12,9 @@ import theater.project.MovieTheater.Service.MovieService;
 
 import java.io.IOException;
 import java.util.Base64;
+
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -65,5 +67,7 @@ public class MovieServiceImpl implements MovieService {
 
     }
 }
+
+
 
 
